@@ -32,12 +32,14 @@ ALLOWED_HOSTS = [
     '127.0.0.1',  # Permitir localhost
     'f8f8-85-91-67-35.ngrok-free.app',
     '8f40929ea02b4e812e81e9796fa15857.serveo.net',
+    '8000-idx-adminsumarte-1728973718758.cluster-23wp6v3w4jhzmwncf7crloq3kw.cloudworkstations.dev',
     # Agrega cualquier otro dominio que necesites permitir
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     'https://f8f8-85-91-67-35.ngrok-free.app', 
     'https://8f40929ea02b4e812e81e9796fa15857.serveo.net'
+    'https://8000-idx-adminsumarte-1728973718758.cluster-23wp6v3w4jhzmwncf7crloq3kw.cloudworkstations.dev',
 ]
 
 # Application definition
@@ -111,20 +113,20 @@ ASGI_APPLICATION = 'AdminSumarte.asgi.application'
 
 DATABASES = {
     
-   # 'default': {
-   #     'ENGINE': 'django.db.backends.sqlite3',
-   #     'NAME': BASE_DIR / 'db.sqlite3',
-   # }
+   'default': {
+       'ENGINE': 'django.db.backends.sqlite3',
+       'NAME': BASE_DIR / 'db.sqlite3',
+   }
    
    # CONFIGURACION CON LA MARIA_DB bd_sumarte_admin
-   'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'bd_sumarte_admin',
-        'USER': 'root',
-        'PASSWORD': 'root',
-        'HOST': 'localhost',
-        'PORT': '3306',
-    }
+#    'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'bd_sumarte_admin',
+#         'USER': 'root',
+#         'PASSWORD': 'root',
+#         'HOST': 'localhost',
+#         'PORT': '3306',
+#     }
 }
 
 
