@@ -1,7 +1,14 @@
 # 2º - A CONTINUACION DE LA DEFINICION DE LAS TABLAS, POR CONSOLA:
 
+#ACTIVAR ENTORNO VIRTUAL
+#source venv/bin/activate
+
+
 # PARA COMPROBAR QUE TODO ESTÁ CORRECTO: 
 # python manage.py check gestionPedidos
+# ACTUALIZAR REQUERIMIENTOS
+# pip freeze > requirements.txt
+# $ git push origin main
 
 # PARA CREAR LA BD: 
 # python manage.py makemigrations

@@ -24,11 +24,11 @@ from reportlab.lib.styles import getSampleStyleSheet
 
 @login_required(login_url="/accounts/login/login")
 def red_menu(request):
-    return render (request, "personal_red/home.html")
+    return render (request, "Personal_Red/home.html")
 
 @login_required(login_url="/accounts/login/login")
 def red_menu_informes(request):
-    return render (request, "personal_red/menu_informes.html")
+    return render (request, "Personal_Red/menu_informes.html")
 
 @login_required(login_url="/accounts/login/login")
 def informes_control_diario(request):
@@ -37,7 +37,7 @@ def informes_control_diario(request):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
  
-    return render (request, "personal_red/informes_control_diario.html",{'controles': page_obj})
+    return render (request, "Personal_Red/informes_control_diario.html",{'controles': page_obj})
 
 
 @login_required(login_url="/accounts/login/login")
@@ -48,7 +48,7 @@ def obtener_lineas_informe(request, control_id):
     # Filtra las líneas asociadas al control_diario especificado
     lineas = ControlDiarioLinea.objects.filter(control_diario=control).order_by('dia')
 
-    return render(request, 'personal_red/informes_control_diario_detalle.html', {'lineas': lineas, 'control': control})
+    return render(request, 'Personal_Red/informes_control_diario_detalle.html', {'lineas': lineas, 'control': control})
 
 
 @login_required(login_url="/accounts/login/login")
@@ -65,7 +65,7 @@ def add_linea_control_diario(request, control_id):
     else:
         form = ControlDiarioLineaForm()
     
-    return render(request, 'personal_red/add_linea_control_diario.html', {'form': form, 'control_diario': control_diario})
+    return render(request, 'Personal_Red/add_linea_control_diario.html', {'form': form, 'control_diario': control_diario})
 
 
 
@@ -92,7 +92,7 @@ def eliminar_linea_control_diario(request, control_id):
 def informes_control_diario_detalle(request, control_id):
     control = ControlDiario.objects.get(id=control_id)
     lineas = ControlDiarioLinea.objects.filter(control_diario=control)
-    return render(request, 'personal_red/informes_control_diario_detalle.html', {'control': control, 'lineas': lineas})
+    return render(request, 'Personal_Red/informes_control_diario_detalle.html', {'control': control, 'lineas': lineas})
 
 
 

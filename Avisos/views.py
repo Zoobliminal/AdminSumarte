@@ -286,7 +286,7 @@ def aviso_nuevo(request):
     else:
         form_nuevoAviso = NuevoAvisoForm()
     
-    return render(request, 'avisos/aviso_nuevo.html', {'form': form_nuevoAviso})   
+    return render(request, 'Avisos/aviso_nuevo.html', {'form': form_nuevoAviso})   
 
 
 @login_required(login_url="/accounts/login/login")

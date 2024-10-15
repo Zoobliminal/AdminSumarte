@@ -4,6 +4,10 @@ http://localhost:8000/cargar_datos_iniciales/
 'crispy_forms',
 'crispy_bootstrap5',
 
+# ACTUALIZAR REQUERIMIENTOS
+# pip freeze > requirements.txt
+# $ git push origin main
+
 # RELATIVO A NOTIFICACIONES
 'twilio' - Notificaciones Whastapp
     Recovery code

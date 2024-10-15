@@ -30,6 +30,8 @@ DEBUG = True
 ALLOWED_HOSTS = [
     'localhost',  # Permitir localhost
     '127.0.0.1',  # Permitir localhost
+    '0.0.0.0',
+
     'f8f8-85-91-67-35.ngrok-free.app',
     '8f40929ea02b4e812e81e9796fa15857.serveo.net',
     '8000-idx-adminsumarte-1728973718758.cluster-23wp6v3w4jhzmwncf7crloq3kw.cloudworkstations.dev',
@@ -37,10 +39,11 @@ ALLOWED_HOSTS = [
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://f8f8-85-91-67-35.ngrok-free.app', 
-    'https://8f40929ea02b4e812e81e9796fa15857.serveo.net'
+    'http://0.0.0.0:8000/',
+    'https://8000-idx-adminsumarte-1728973718758.cluster-23wp6v3w4jhzmwncf7crloq3kw.cloudworkstations.dev/',
     'https://8000-idx-adminsumarte-1728973718758.cluster-23wp6v3w4jhzmwncf7crloq3kw.cloudworkstations.dev',
-]
+    'https://8000-idx-adminsumarte-1728973718758.cluster-23wp6v3w4jhzmwncf7crloq3kw.cloudworkstations.dev/accounts/login/login',
+] 
 
 # Application definition
 
