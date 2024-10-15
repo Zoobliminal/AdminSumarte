@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+{% extends "AdminSumarteApp/base.html" %}
+{% load static %}
+<html lang="en">
+
+{% block title %}
+<h2><p class="text-white">Control Diario</p></h2>
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    
+      <h2><p class="text-white">Control Diario</p></h2>
+
+    <!-- Verifica si hay controles diarios -->
+    {% if controles %}
+    <div class="table-responsive table-sm">
+      <h6><p class="text-white">REGISTRO – CONTROL DIARIO EN DEPÓSITO Y RED (ROTANDO PUNTOS)</p></h6>
+        <table class="table table-sm table-hover table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Abrir</th>
+                    <th scope="col">Año</th>
+                    <th scope="col">Mes</th>
+                   
+                    <th scope="col">Última Actualización</th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+                
+                <!-- Iterar sobre los controles diarios -->
+                {% for control in controles %}
+               
+                <td >
+                        
+                    <a href="{% url 'obtener_lineas_informe' control.id %}" class="btn btn-primary btn-sm">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
+                            <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
+                            <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"/>
+                        </svg>
+                        
+                    </a>
+                   
+                  </td>
+                                   
+                    <td>{{ control.año }}</td>
+                    <td>{{ control.nombre_mes }}</td>
+                    <td>{{ control.updated|date:"d/m/Y H:i" }}</td>
+                   
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Paginación (si es necesario) -->
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+            {% if controles.has_previous %}
+                <li class="page-item"><a class="page-link" href="?page={{ controles.previous_page_number }}">Anterior</a></li>
+            {% endif %}
+            {% for num in controles.paginator.page_range %}
+                <li class="page-item {% if controles.number == num %}active{% endif %}"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+            {% endfor %}
+            {% if controles.has_next %}
+                <li class="page-item"><a class="page-link" href="?page={{ controles.next_page_number }}">Siguiente</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+
+    {% else %}
+    <div class="alert alert-info" role="alert">
+        No hay controles diarios disponibles.
+    </div>
+    {% endif %}
+  </div>
+
+
+{% endblock %}
+</html>

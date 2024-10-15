@@ -1,0 +1,118 @@
+<!DOCTYPE html> 
+{% extends "AdminSumarteApp/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<div class="container mt-4">
+    <h2><p class="text-white">Detalle del Aviso</p></h2>
+    
+    <!-- Información básica del aviso -->
+    <div class="card">
+        <div class="card-header">
+            Aviso: {{ aviso.id }} - Num.Registro: {{ aviso.registro }}
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">{{ aviso.direccion }}</h5>
+            <p class="card-text">
+                <strong>Nombre:</strong> {{ aviso.nombre }}<br>
+                <strong>Teléfono:</strong> {{ aviso.telefono }}<br>
+                <strong>Contrato:</strong> {{ aviso.contrato }}<br>
+                <strong>Motivo:</strong> {{ aviso.motivo }}<br>
+                <strong>Modo:</strong> {{ aviso.modo }}<br>
+                <strong>Fecha de Creación:</strong> {{ aviso.created }}<br>
+                <strong>Fecha de Resolución:</strong> {% if aviso.fecha_resolucion %} {{ aviso.fecha_resolucion }} {% else %} N/A {% endif %}<br>
+                <strong>Estatus:</strong> {{ aviso.estatus }}<br>
+                <strong>Finalizado:</strong> {% if aviso.finalizado %} Sí {% else %} No {% endif %}<br>
+            </p>
+        </div>
+    </div>
+
+    <!-- Trabajadores Asignados -->
+    <div class="card mt-4">
+        <div class="card-header">
+            Trabajadores Asignados
+        </div>
+        <div class="card-body">
+            {% if trabajadores_asignados %}
+                <ul>
+                    {% for trabajador in trabajadores_asignados %}
+                        <li>{{ trabajador.trabajador.username }} </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No hay trabajadores asignados.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Comentarios -->
+    <div class="card mt-4">
+        <div class="card-header">
+            Comentarios
+        </div>
+        <div class="card-body">
+            {% if comentarios %}
+                <ul>
+                    {% for comentario in comentarios %}
+                        <li>
+                            <strong>{{ comentario.usuario.username }}:</strong>
+                            <a style="display:grid;width:60px">
+                                <img class="img-thumbnail" 
+                                    type="button" 
+                                    class="btn btn-primary" 
+                                    data-bs-toggle="modal" 
+                                    data-bs-target="#imagen{{ forloop.counter }}" 
+                                    src="{{ comentario.imagen.url }}"> 
+                                </img>
+                              </a>
+                            <p>{{ comentario.comentario }} - <small>{{ comentario.created|date:"d/m/Y H:i" }}</small></p>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No hay comentarios.</p>
+            {% endif %}
+        </div>
+    </div>
+
+     <!-- ABRIR IMAGEN DE COMENTARIOS EN VENTANA MODAL -->
+     {% for comentario in comentarios %}
+     {% if comentario.aviso_id == aviso.id and comentario.imagen != 'Avisos/aviso_default.jpg' %}
+                             
+       <div class="modal fade" id="imagen{{ forloop.counter }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+         <div class="modal-dialog">
+           <div class="modal-content">
+             <div class="modal-header">
+               <h1 class="modal-title fs-5" id="staticBackdropLabel">Vista ampliada</h1>
+               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+             </div>
+             <div class="modal-body">
+               <img class="img-thumbnail" src="{{comentario.imagen.url}}"></img><br>
+               <!-- <a>{{imagen.comentario}}</a> -->
+
+             </div>
+           
+             <div class="modal-footer">
+               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+               
+             </div>
+           </div>
+         </div>
+       </div>
+                           
+     {% endif %}                      
+   {% endfor %}
+    <!-- FIN DE MOSTRAR IMAGEN EN VENTANA MODAL -->
+
+    <!-- Botón para volver a la lista de avisos -->
+    <div class="mt-4">
+        <a href="{% url 'avisos_cerrados' %}" class="btn btn-primary">Volver a historial</a>
+        <a href="{% url 'reabrir_aviso' aviso.id %}" class="btn btn-warning">Re-abrir aviso</a>
+    </div>
+    <br>
+</div>
+
+{% endblock %}
+
+

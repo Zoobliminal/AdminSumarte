@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+{% extends "AdminSumarteApp/base.html" %}
+{% load crispy_forms_tags %}
+
+
+<html lang="en">
+
+{% block title %}
+
+SUMARTE - ADMINISTRACION
+
+{% endblock %}
+
+{% block content %} 
+
+ <!-- ALTERNA BOTON NUEVO AVISO / CHECK BOX SOLO MIS AVISOS ASIGNADOS -->
+
+ <form method="GET" action="{% url 'avisos' %}" id="filtro-avisos-form">
+  
+  {% if request.user.is_staff %}
+    <a class="btn btn-outline-warning btn-sm" href="{% url 'aviso_nuevo' %}" role="button">Insertar Nuevo Aviso</a>
+    <a class="btn btn-outline-warning btn-sm" href="{% url 'avisos_cerrados' %}" role="button">Ver Historial</a>
+    <br><br><center><a class="btn btn-outline-warning btn-sm" role="button" id="btn-refresh" onclick="location.reload();">Actualizar datos</a>
+  {% else%}
+    <br><center><a class="btn btn-outline-warning btn-sm" role="button" id="btn-refresh" onclick="location.reload();">Actualizar datos</a>
+    {% comment %} {% else %}  Checkbox para filtrar solo los avisos del usuario conectado
+    <label style="color:white" for="mis_avisos" class="p-2">Mostrar sólo mis avisos asignados</label>
+    <input type="checkbox" id="mis_avisos" name="mis_avisos" value="1" 
+    {% if request.GET.mis_avisos %}checked{% endif %} onchange="this.form.submit();"> {% endcomment %}
+  {% endif %}
+
+  
+</form>
+
+
+   
+ 
+ <!-- Fin Checkbox Mis avisos -->
+
+ <!-- Lista de avisos -->
+ <div class="container mt-4">
+ <div class="row" id="aviso-container">
+  {% for aviso in avisos %}
+      <div class="col-lg-6 col-md-12 mb-4">
+
+          <div class="card" 
+          {% if aviso.estatus == "pendiente" %} style="background-color: #fff5f5"
+          {% elif aviso.estatus == "en_proceso" %}style="background-color: #fff3e0"
+          {% elif aviso.estatus == "resuelto" %} style="background-color: #f5fff5" 
+          {% elif aviso.estatus == "sin_resolver" %} style="background-color: #fff5f5" 
+          {% elif aviso.estatus == "cerrado" %} style="background-color: #f5f5f5"
+          {% endif %} >
+
+              <div class="card-body">
+                
+                <table class="table" style: "border: 5px solid orange"> <!-- Cabecero de aviso / hora y estado del aviso / historial-->
+                  <tbody>
+                    <tr>
+                      <td>{{aviso.created|date:"d/m/Y - H:i"}} | <b>{{aviso.usuario}}</td>
+                      <td class="text-end">{% if aviso.finalizado %}
+                        {% if request.user.is_staff %} <!-- Icono de historial para el staff (estado finalizado)-->
+                        <a href="#" data-bs-toggle="modal" data-bs-target="#modalHistorialAviso{{ aviso.id }}">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class="bi bi-file-earmark-text-fill" viewBox="0 0 16 16">
+                          <path d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0M9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1M4.5 9a.5.5 0 0 1 0-1h7a.5.5 0 0 1 0 1zM4 10.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m.5 2.5a.5.5 0 0 1 0-1h4a.5.5 0 0 1 0 1z"/>
+                          </svg></a>
+                        {% endif %}
+                        <span class="badge bg-success rounded-0">ESTADO: FINALIZADO</span>
+                        {% else %}
+
+                        <style>                      
+                        .parpadea {
+                          
+                          animation-name: parpadeo;
+                          animation-duration: 2s;
+                          animation-timing-function: linear;
+                          animation-iteration-count: infinite;
+                        
+                          -webkit-animation-name:parpadeo;
+                          -webkit-animation-duration: 2s;
+                          -webkit-animation-timing-function: linear;
+                          -webkit-animation-iteration-count: infinite;
+                        }                        
+                        @-moz-keyframes parpadeo{  
+                          0% { opacity: 1.0; }
+                          50% { opacity: 0.0; }
+                          100% { opacity: 1.0; }
+                        }                        
+                        @-webkit-keyframes parpadeo {  
+                          0% { opacity: 1.0; }
+                          50% { opacity: 0.0; }
+                           100% { opacity: 1.0; }
+                        }                       
+                        @keyframes parpadeo {  
+                          0% { opacity: 1.0; }
+                           50% { opacity: 0.0; }
+                          100% { opacity: 1.0; }
+                        }
+                        </style>
+
+                        {% if request.user.is_staff %} 
+                        <a href="#" data-bs-toggle="modal" data-bs-target="#modalHistorialAviso{{ aviso.id }}">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class="bi bi-file-earmark-text-fill" viewBox="0 0 16 16">
+                          <path d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0M9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1M4.5 9a.5.5 0 0 1 0-1h7a.5.5 0 0 1 0 1zM4 10.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m.5 2.5a.5.5 0 0 1 0-1h4a.5.5 0 0 1 0 1z"/>
+                          </svg></a>
+                        
+                        {% endif %}
+                        <span class="badge bg-danger rounded-0 parpadea">ESTADO: PENDIENTE</span>
+                        
+                        
+                        {% endif %}
+                    </td>
+                    </tr>
+                  </tbody>
+                </table>
+                
+                  
+                  
+                  {% if request.user.is_staff %} 
+                  <h4 class="card-title"><a hover:"text-decoration:none" href="{% url 'editar_aviso' aviso.id %}" >{{ aviso.direccion }}</a></h4>
+                  {% else %}
+                  <h4 class="card-title">{{ aviso.direccion }}</h4>
+                  {% endif %}
+                  <p>
+                    
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-telephone-forward-fill" viewBox="0 0 16 16">
+                      <path fill-rule="evenodd" d="M1.885.511a1.745 1.745 0 0 1 2.61.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.68.68 0 0 0 .178.643l2.457 2.457a.68.68 0 0 0 .644.178l2.189-.547a1.75 1.75 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.6 18.6 0 0 1-7.01-4.42 18.6 18.6 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877zm10.761.135a.5.5 0 0 1 .708 0l2.5 2.5a.5.5 0 0 1 0 .708l-2.5 2.5a.5.5 0 0 1-.708-.708L14.293 4H9.5a.5.5 0 0 1 0-1h4.793l-1.647-1.646a.5.5 0 0 1 0-.708"/>
+                    </svg>  {{ aviso.telefono }} - <b>{{ aviso.nombre }}</b>
+                  </p>
+                  <p><strong>Motivo:</strong> {{ aviso.motivo }}</p>
+         
+                 
+               
+               
+                  <!-- Mostrar trabajador asignado si existe -->
+                  {% for trabajador in trabajadores %}
+                      {% if aviso.id == trabajador.aviso_id %}
+                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-wrench-adjustable-circle-fill" viewBox="0 0 16 16">
+                        <path d="M6.705 8.139a.25.25 0 0 0-.288-.376l-1.5.5.159.474.808-.27-.595.894a.25.25 0 0 0 .287.376l.808-.27-.595.894a.25.25 0 0 0 .287.376l1.5-.5-.159-.474-.808.27.596-.894a.25.25 0 0 0-.288-.376l-.808.27z"/>
+                        <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m-6.202-4.751 1.988-1.657a4.5 4.5 0 0 1 7.537-4.623L7.497 6.5l1 2.5 1.333 3.11c-.56.251-1.18.39-1.833.39a4.5 4.5 0 0 1-1.592-.29L4.747 14.2a7.03 7.03 0 0 1-2.949-2.951M12.496 8a4.5 4.5 0 0 1-1.703 3.526L9.497 8.5l2.959-1.11q.04.3.04.61"/>
+                      </svg>
+                      <span class="badge bg-dark rounded-0"> {{ trabajador.trabajador }}</span> 
+
+                      <!-- Botón para eliminar la asignación -->
+                      {% if request.user.is_staff %} 
+                      <a href="{% url 'eliminar_asignacion' trabajador.id %}" >
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="red" class="bi bi-x-square-fill" viewBox="0 0 16 16">
+                          <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708"/>
+                        </svg>
+                      </a> 
+                      {% endif %}
+                      {% endif %}
+                  {% endfor %}
+                
+                  <hr>
+
+
+
+                  <div class="container">
+                    <div class="row row-cols-auto">
+                      
+                      <div class="col">
+
+                        {% if request.user.is_staff %}  <!-- Botón asignamiento solo para administradores -->
+                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modalAsignarTrabajador{{ aviso.id }}">
+                          Asignamiento
+                        </button>                    
+                        {% endif %}
+
+                      </div>
+
+                      <div class="col" text-align-end>  <button type="button" 
+                        {% if aviso.estatus == "pendiente" %} class="btn btn-danger btn-sm" 
+                        {% elif aviso.estatus == "en_proceso" %} class="btn btn-warning btn-sm" 
+                        {% elif aviso.estatus == "resuelto" %} class="btn btn-success btn-sm" 
+                        {% elif aviso.estatus == "sin_resolver" %} class="btn btn-secondary btn-sm" 
+                        {% elif aviso.estatus == "cerrado" %} class="btn btn-dark btn-sm" 
+                        {% endif %} 
+                        data-bs-toggle="modal" data-bs-target="#modalCerrarAviso{{ aviso.id }}">
+                        
+
+                        {{ aviso.estatus|title }}  <!-- Mostramos el estado actual -->
+                      </button></div>
+
+                      <div class="col">                 
+                        <button type="button" class="btn btn-primary btn-sm " data-bs-toggle="modal" data-bs-target="#modalComentario{{ aviso.id }}">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat-right-text-fill" viewBox="0 0 16 16">
+                          <path d="M16 2a2 2 0 0 0-2-2H2a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h9.586a1 1 0 0 1 .707.293l2.853 2.853a.5.5 0 0 0 .854-.353zM3.5 3h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1 0-1m0 2.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1 0-1m0 2.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1 0-1"/>
+                          </svg>
+                        </button>
+                      </div>
+
+                      {% comment %} <div class="col">
+                        <button type="button" 
+                        {% if aviso.longitud and aviso.latitud  %} class="btn btn-success btn-sm " 
+                        {% else %} class="btn btn-secondary btn-sm "  {% endif %} 
+                        
+                        data-bs-toggle="modal" data-bs-target="#modalUbicacion{{ aviso.id }}">                 
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-geo-alt-fill" viewBox="0 0 16 16">
+                          <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10m0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6"/>
+                        </svg>
+                        </button>
+                      </div>                 {% endcomment %}
+
+                    </div>
+                  </div>
+
+                 
+                 
+                   <!-- Modal Insertar Comentario -->
+                  <div class="modal fade" id="modalComentario{{ aviso.id }}" tabindex="-1" aria-labelledby="modalComentarioLabel{{ aviso.id }}" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="modalComentarioLabel{{ aviso.id }}">Nuevo Comentario</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form class="form-control" enctype="multipart/form-data" action="{% url 'insertarComentario' aviso.id %}" method="POST" id="form-imagen-aviso">
+                                    {% csrf_token %}
+                                    {{ form_comentario | crispy }}
+                                    <br>
+                                    <input type="submit" class="btn btn-primary" value="Insertar Imagen / Comentario" class="btn btn-success">
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Fin Modal Comentario -->
+
+               
+
+        
+                <!-- Modal Cambiar Estado del Aviso -->
+                <div class="modal fade" id="modalCerrarAviso{{ aviso.id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="staticBackdropLabel">Cambiar estado del aviso</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+
+
+                        <!-- Formulario para cambiar el estado del aviso -->
+                        <form method="POST" action="{% url 'cambiar_estado' aviso.id %}">
+                          {% csrf_token %}
+                          
+                          <div class="mb-3">
+                            <label for="estatusSelect" class="form-label">Selecciona un estado</label>
+                            <select class="form-select" id="estatusSelect" name="estatus">
+                              <option value="pendiente" {% if aviso.estatus == "pendiente" %}selected{% endif %}>Pendiente</option>
+                              <option value="en_proceso" {% if aviso.estatus == "en_proceso" %}selected{% endif %}>En Proceso</option>
+                              <option value="resuelto" {% if aviso.estatus == "resuelto" %}selected{% endif %}>Resuelto</option>
+                              <option value="sin_resolver" {% if aviso.estatus == "sin_resolver" %}selected{% endif %}>Sin resolver</option>
+                              {% if request.user.is_staff %}  <!-- Opcion de cierre solo para administradores -->
+                              <option value="cerrado" {% if aviso.estatus == "cerrado" %}selected{% endif %}>Cerrar</option>
+                              {% endif %}
+                            </select>
+                          </div>
+
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                          </div>
+                        </form>
+
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- Fin Modal Cambiar Estado del Aviso -->
+
+
+
+
+
+                <!-- Modal Asignamiento Trabajador-->
+                  <div class="modal fade" id="modalAsignarTrabajador{{ aviso.id }}" tabindex="-1" aria-labelledby="modalAsignarTrabajadorLabel{{ aviso.id }}" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="modalAsignarTrabajadorLabel{{ aviso.id }}">Asignar Trabajador</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <!-- Mostrar la dirección del aviso -->
+                                <p><strong>Dirección del aviso:</strong> {{ aviso.direccion }}</p>
+
+                                <!-- Formulario para asignar trabajador -->
+                                <form method="POST" enctype="multipart/form-data" action="{% url 'asignar_trabajador' aviso.id %}">
+                                    {% csrf_token %}
+                                    {{ form_trabajadores | crispy }}  
+                                    
+                                      <!-- Checkbox para enviar notificación -->
+                                
+                                   
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="enviarNotificacion{{ aviso.id }}" name="enviar_notificacion_telegram" checked="True">
+                                        <label class="form-check-label" for="enviarNotificacion{{ aviso.id }}">
+                                        Enviar notificación por Telegram
+                                        </label>
+                                    </div>    
+                                    <hr>
+                                    <input type="submit" value="Asignar" class="btn btn-primary btn-sm">                               
+                              </form>
+                            </div>
+                        </div>
+                    </div>
+                  </div>
+                 <!-- Fin Modal Asignar Trabajador -->
+
+
+                  <!-- Modal Historial Aviso Estados-->
+                  <div class="modal fade" id="modalHistorialAviso{{ aviso.id }}" tabindex="-1" aria-labelledby="modalHistorialAvisoLabel{{ aviso.id }}" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="modalAsignarTrabajadorLabel{{ aviso.id }}">Historial de acciones</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                              
+                              <ul>
+                                {% for accion in aviso.historial.all %}
+                                  <li>{{ accion.fecha|date:"d/m/Y - H:i" }} - {{ accion.accion }} por {{ accion.usuario.username }}:<br> {{ accion.comentario }}</li><hr>
+                                {% empty %}
+                                  <li>No hay acciones registradas.</li>
+                                {% endfor %}
+                              </ul>
+                                    
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                  </div>
+                 <!-- Fin Modal Historial Estados -->
+
+                  <hr>
+                  
+                  
+                  <!-- TABLA DE COMENTARIOS DEL AVISO -->
+                   <table class="table table-warning table-striped">
+                    
+                      <tbody>
+                        {% for imagen in imagenes %}
+                            <tr>
+                              {% if imagen.aviso_id == aviso.id %} 
+
+                               <td>
+                                  <a style="display:grid;width:60px">
+                                    <img class="img-thumbnail" 
+                                        type="button" 
+                                        class="btn btn-primary" 
+                                        data-bs-toggle="modal" 
+                                        data-bs-target="#imagen{{ forloop.counter }}" 
+                                        src="{{ imagen.imagen.url }}"> 
+                                    </img>
+                                  </a>
+                                </td>
+                              
+                                <td>                                 
+                                  {{imagen.usuario}}    
+                                  <p><small>- {{imagen.comentario}} - <small><small><a class="text-secondary"> {{imagen.created|date:"d/m/Y - H:i"}} </a>
+
+                                  {% if imagen.usuario == request.user %}
+                                  <a class="text-secondary" href="{% url 'eliminar_comentario' imagen.id %}"> - Eliminar</a>
+                                        
+                                  {% endif %}
+                                  </p>                                 
+                                </td>
+
+                                
+                                                          
+                              {% endif %}
+                            </tr>
+                        {% endfor %}
+                  
+                      </tbody>                                                                          
+                    </table>
+                  <!-- FIN TABLA DE COMENTARIOS DEL AVISO -->
+
+
+
+                     <!-- ABRIR IMAGEN DE COMENTARIOS EN VENTANA MODAL -->
+                    {% for imagen in imagenes %}
+                      {% if imagen.aviso_id == aviso.id and imagen.imagen != 'Avisos/aviso_default.jpg' %}
+                                              
+                        <div class="modal fade" id="imagen{{ forloop.counter }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                          <div class="modal-dialog">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="staticBackdropLabel">Vista ampliada</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                              </div>
+                              <div class="modal-body">
+                                <img class="img-thumbnail" src="{{imagen.imagen.url}}"></img><br>
+                                <!-- <a>{{imagen.comentario}}</a> -->
+        
+                              </div>
+                            
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                                            
+                      {% endif %}                      
+                    {% endfor %}
+                     <!-- FIN DE MOSTRAR IMAGEN EN VENTANA MODAL -->
+
+              </div>
+          </div>
+      </div>
+  {% endfor %}
+</div>
+</div>
+
+
+{% endblock %}
+
+
+
+</html>

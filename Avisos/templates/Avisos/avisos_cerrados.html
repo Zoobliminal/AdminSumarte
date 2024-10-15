@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+{% extends "AdminSumarteApp/base.html" %}
+
+{% block title %}
+SUMARTE - ADMINISTRACION
+{% endblock %}
+
+{% block content %} 
+<body>
+    <div class="card text-center"><h5 class="card-title">HISTORIAL DE AVISOS</h5></div>
+   
+    <div class="table-responsive p-2">
+        <table class="table table-success table-hover table-striped table-sm">
+            <thead class="table-dark">
+                <tr>
+                    <th scope="col">Dirección</th>
+                    <th scope="col">Motivo</th>
+                    <th scope="col">Fecha de apertura</th>
+                    <th scope="col">Fecha de cierre</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for aviso in page_obj %}
+                    <tr>
+                        <th scope="row">
+                            <a href="{% url 'aviso_detalle' aviso.id %}">{{ aviso.direccion }}</a>
+                        </th>
+                        <td>{{ aviso.motivo }}</td>
+                        <td>{{ aviso.created|date:"d/m/Y - H:i" }}</td>
+                        <td>{{ aviso.updated|date:"d/m/Y - H:i" }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Paginación -->
+    <nav aria-label="Paginación de avisos">
+        <ul class="pagination pagination-sm justify-content-center">
+            {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page=1">Primera</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Anterior</a>
+                </li>
+            {% endif %}
+            <li class="page-item active">
+                <span class="page-link">{{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span>
+            </li>
+
+            {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}">Siguiente</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Última</a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+</body>
+{% endblock %}

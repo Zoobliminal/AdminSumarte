@@ -1,0 +1,33 @@
+Carga demo de datos tras reinicio de migraciones
+http://localhost:8000/cargar_datos_iniciales/
+
+'crispy_forms',
+'crispy_bootstrap5',
+
+# RELATIVO A NOTIFICACIONES
+'twilio' - Notificaciones Whastapp
+    Recovery code
+    4CAJWPBJS4QMF15GXRPLSPNX
+'requests' - Notificaciones telegram
+
+Telegram Bot
+pip install python-telegram-bot
+
+#Comprobar Chat-ID de usuarios
+https://api.telegram.org/bot8004995881:AAHVc78jSzLUggQuNZK4sArgSf6MJtW-9z8/GETUPDATES
+
+
+settings.py - configuracion NROK para pruebas smartphone 
+ngrok http 80
+
+ALLOWED_HOSTS = [
+    'localhost',  # Permitir localhost
+    '127.0.0.1',  # Permitir localhost
+    'f662-85-91-67-35.ngrok-free.app',  # Tu dominio ngrok
+    # Agrega cualquier otro dominio que necesites permitir
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://f662-85-91-67-35.ngrok-free.app',
+    'http://<your_ngrok_subdomain>.ngrok-free.app',
+]

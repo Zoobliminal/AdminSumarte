@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+{% extends "AdminSumarteApp/base.html" %}
+
+{% load static %}
+
+<html lang="en">
+
+
+
+{% block title %}
+
+SUMARTE - ADMINISTRACION
+
+{% endblock %}
+
+
+{% block content%} 
+    
+
+
+   
+  
+    <div class="card text-center">
+      <h5 class="card-title">GESTION DE CORTE</h5>
+      <button type="button" class="btn btn-outline-secondary " href="{% url 'aviso_nuevo' %}">Registro de contador</button>
+    </div>
+    <!-- Botones -->
+   
+   
+
+    <!--
+      <div role="region" aria-label="data table" tabindex="0" class="primary">
+      <table class="table table-danger table-hover table-striped">
+        <thead>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Direccion</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Notificado</th>
+            <th scope="col">Contador</th>
+          <th scope="col">Medios</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">1</th>
+            <td>Mark</td>
+            <td>Otto</td>
+            <td>@mdo</td>
+            <td>Otto</td>
+            <td>@mdo</td>
+          </tr>
+          <tr>
+            <th scope="row">2</th>
+            <td>Jacob</td>
+            <td>Thornton Thor ntonThornton Thornto nThornto n jha   aoshid aoisad siasdas a d ss d sdf sd fsd fsfdf sdf sd fsidasda sdiasd asid asidadj a</td>
+            <td>@fat</td>
+            <td>Otto</td>
+            <td>@mdo</td>
+          </tr>
+          <tr>
+            <th scope="row">3</th>
+            <td colspan="2">Larry the Bird</td>
+            <td colspan="3">Harry the Bard</td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+-->
+
+      <!-- RESPONSIVE TABLE -->
+        <div role="region" aria-label="data table" tabindex="0" class="primary">
+          <!-- Note: use the aria-label attribute above to describe this keyboard-focusable region appropriately, per your implementation. Alternatively, it could instead be an aria-labelledby attribute that points to a table caption's ID attribute. Thx for thoughts, @aardrian  -->
+          <table class=" table table-danger table-hover table-striped">
+            <thead>
+              <tr>
+                <th class="pin"> </th>
+                <th>Col Header</th>
+                <th>Col Header</th>
+                <th>Col Header</th>
+                <th>Col Header</th>
+                <th>Col Header</th>
+                <th>Col Header</th>
+                <th>Col Header</th>
+                <th>Col Header</th>
+                <th>Col Header</th>
+                <th>Col Header</th>
+              </tr>
+            </thead>
+      
+            <tbody>
+              <tr>
+                <th>Row Header</th>
+                <td>Mark aosdm asodmasd</td>
+                <td>Otto  asd asd asd </td>
+                <td>{{comentarios}}</td>
+                <td>Otto asd a as d</td>
+                <td>@mdo asd asda </td>
+                <td>Mark</td>
+                <td>Otto</td>
+                <td>@mdo</td>
+                <td>Mark aosdm asodmasd</td>
+                <td>Otto</td>
+              </tr>
+              
+              <tr>
+                <th>Row Header</th>
+                <td>Mark aosdm asodmasd</td>
+                <td>Otto  asd asd asd </td>
+                <td>@mdo a asd asdasdads asd a</td>
+                <td>Otto asd a as d</td>
+                <td>@mdo asd asda </td>
+                <td>Mark</td>
+                <td>Otto</td>
+                <td>@mdo</td>
+                <td>Mark aosdm asodmasd</td>
+                <td>Otto</td>
+              </tr>
+
+              <tr>
+                <th>Row Header</th>
+                <td>Mark aosdm asodmasd</td>
+                <td>Otto  asd asd asd </td>
+                <td>@mdo a asd asdasdads asd a</td>
+                <td>Otto asd a as d</td>
+                <td>@mdo asd asda </td>
+                <td>Mark</td>
+                <td>Otto</td>
+                <td>@mdo</td>
+                <td>Mark aosdm asodmasd</td>
+                <td>Otto</td>
+              </tr>
+
+              <tr>
+                <th>Row Header</th>
+                <td>Mark aosdm asodmasd</td>
+                <td>Otto  asd asd asd </td>
+                <td>@mdo a asd asdasdads asd a</td>
+                <td>Otto asd a as d</td>
+                <td>@mdo asd asda </td>
+                <td>Mark</td>
+                <td>Otto</td>
+                <td>@mdo</td>
+                <td>Mark aosdm asodmasd</td>
+                <td>Otto</td>
+              </tr>
+              
+            </tbody>
+          </table>
+        </div>
+       
+            
+    </body>
+
+  
+
+
+{% endblock %}
+
+</html>

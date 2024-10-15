@@ -1,0 +1,31 @@
+
+{% extends "AdminSumarteApp/base.html" %}
+  
+{% load static %}
+
+
+  {% block content %}
+
+    <body>
+    <div class="card">
+      <div class="card-header">
+        Información
+      </div>
+      <div class="card-body text-center">
+        <div class="card-body p-5 text-center">
+        
+          <h2 class="mb-4"> <img class=" img-fluid mb-3 mb-lg-0 rounded" src="{% static 'AdminSumarteApp/img/arteixosumarte_logo_azul.png' %}" alt=""></img></h2>
+
+        </div>
+
+        <h5 class="card-title">Registro en la plataforma </h5>
+        <p class="card-text">Contacta con el soporte para registrarte en la aplicación:</p>
+        <p class="card-text"> <a href="mailto:informatica@sumarte.gal">informatica@sumarte.gal</a> </p>
+        <hr>
+        <a href="{% url 'login' %}" class="link fw-semibold">Iniciar Sesion</a>
+      
+      </div>
+    </div>
+  
+  {% endblock %}
+</body>

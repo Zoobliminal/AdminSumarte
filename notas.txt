@@ -1,0 +1,40 @@
+# 2º - A CONTINUACION DE LA DEFINICION DE LAS TABLAS, POR CONSOLA:
+
+# PARA COMPROBAR QUE TODO ESTÁ CORRECTO: 
+# python manage.py check gestionPedidos
+
+# PARA CREAR LA BD: 
+# python manage.py makemigrations
+
+# PARA GENERAR LA SENTENCIA SQL DE CREACION DE LAS TABLAS: 
+# python manage.py sqlmigrate gestionPedidos 0001 
+# DONDE 0001 ES EL VALOR DE VERSION OBTENIDO DE EN LA INSTRUCCION ANTERIOR. CAMBIA A CADA MIGRACION.
+
+# PARA LA CREACION DE LAS TABLAS:
+# python manage.py migrate
+
+# PARA HACER CRUD POR CONSOLA, ACTIVAR SHELL:
+# python manage.py shell 
+# SE INDICARÁ POR CONSOLA CON >>>
+
+# INSERCION DE UN REGISTRO UNICO EN VARIAS ORDENES: (CREATE)
+# >>> from gestionPedidos.models import Articulos
+# >>> art=Articulos(nombre='mesa', seccion='decoracion', precio=90)
+# >>> art.save()
+
+# INSERCION DE UN REGISTRO EN UNA UNICA ORDEN: (CREATE)
+# >>> art3=Articulos.objets.create(nombre="taladro", seccion="ferreteria", precio=65)
+
+# ACTUALIZAR UN REGISTRO: (UPDATE)
+# >>> art.precio=95                                                                    
+# >>> art.save()  
+
+# BORRAR UN REGISTRO: (DELETE) 
+# >>> art5=Articulos.objects.get(id=2)  
+# >>> art5.delete()
+
+# CONSULTAR (READ)
+# >>> Lista=Articulos.objects.all()
+# >>> Lista
+# >>> Lista.query.__str__() MUESTRA LA SENTENCIA SQL POR CONSOLA.
+

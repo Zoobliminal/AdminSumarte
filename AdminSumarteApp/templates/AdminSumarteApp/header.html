@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <body>
+   
+    <nav class="navbar navbar-expand-lg bg-body-tertiary bg-dark border-bottom border-body" data-bs-theme="dark">
+      
+      <div class="container-fluid">
+        <!-- <img src="https://sumarte.gal/wp-content/uploads/2022/03/arteixosumarte_logo_blanco.png" width="200" height="20" alt="logo-black"> -->
+        <a class="navbar-brand" {% if request.user.is_staff %}href="{% url 'admin:index' %}" {% endif %} &copy;> Arteixo / Sumarte </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            
+            <!-- <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="{% url 'home' %}">Login</a>
+            </li>-->
+
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="{% url 'avisos' %}">Avisos</a>
+            </li>
+                                    
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Contadores
+              </a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="{% url 'cambios_contador' %}">Cambio de contador</a></li>
+                <li><a class="dropdown-item" href="{% url 'lecturas_abonados' %}">Lecturas de abonados</a></li>
+                <li><a class="dropdown-item disabled" href="{% url 'gestion_corte' %}">Gestion de corte</a></li>
+                <li><a class="dropdown-item disabled" href="#">Simulador de consumo</a></li>
+                
+              </ul>
+            </li>
+
+            <li class="nav-item dropdown">
+              <a class="nav-link" aria-current="page" href="{% url 'red_menu' %}">Red</a>
+              {% comment %}<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Red
+              </a>
+               <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="{% url 'calendario_jornada' %}">Agenda diaria</a></li>
+                <li><a class="dropdown-item" href="#">Informes de sanidad</a></li>
+               
+              </ul> {% endcomment %}
+            </li>
+
+            
+            <!--
+            <li class="nav-item">
+              <a class="nav-link disabled" aria-disabled="true">Gestión de corte</a>
+            </li>
+            -->
+            
+          </ul>
+          <!--
+          <form class="d-flex" role="search">
+            <input class="form-control me-2" type="search" placeholder="Buscar" aria-label="Buscar">
+            <button class="btn btn-outline-light" type="submit">Buscar</button>
+          </form> -->
+
+
+          <!-- Texto de logueo -->
+          <div class="" style="margin:10px; color:white; text-align:right; border-radius:25px;">
+
+          {% if user.is_authenticated %}
+
+          Usuario: {{user.username}}
+          <a > - </a>
+          <a href="{% url 'cerrar_sesion' %}" class="link">Cerrar Sesion</a>
+
+          {% else %}
+          
+          <a href="{% url 'login' %}" class="link">Iniciar Sesion</a>
+          <a > - </a>
+          <a href="{% url 'registro' %}" class="link">Registro</a>
+          {% endif %}
+
+</div>
+
+
+        </div>
+      </div>
+    </nav>
+  </body>
+</html>

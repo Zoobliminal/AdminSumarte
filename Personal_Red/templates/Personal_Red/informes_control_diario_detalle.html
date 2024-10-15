@@ -1,0 +1,79 @@
+{% extends "AdminSumarteApp/base.html" %}
+{% load static %}
+{% block title %}
+    <h2><p class="text-white">Control Diario</p></h2>
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2><p class="text-white">Control Diario </p></h2>
+    <h6><p class="text-white">REGISTRO – CONTROL DIARIO EN DEPÓSITO Y RED (ROTANDO PUNTOS) - {{ control.nombre_mes }} {{ control.año }}</p></h6>
+
+   <!-- Formulario para añadir nueva línea -->
+   <form style="width: 100%;" id="nueva-linea-form" method="POST" action="{% url 'add_linea_control_diario' control.id %}">
+    {% csrf_token %}
+    <div class="row g-3">
+        <div class="col-md-2 col-12">
+            <input type="number" name="dia"  class="form-control" placeholder="Día" min="1" max="31" required>
+        </div>
+        <div class="col-md-2 col-12">
+            <input type="text" name="punto" class="form-control" placeholder="Punto" min="0" required>
+        </div>
+        <div class="col-md-2 col-12">
+            <input type="number" step="0.1" name="cloro_libre" class="form-control" min="0" placeholder="Cl. Libre (≤ 1,0 ppm)" required>
+        </div>
+        <div class="col-md-2 col-12">
+            <input type="number" step="0.1" name="cloro_combinado" class="form-control" min="0" placeholder="Cl. Comb. (≤ 2,0 ppm)" required>
+        </div>
+        <div class="col-md-2 col-12">
+            <input type="number" step="0.1" name="ph" class="form-control" min="0" placeholder="pH (6,5 – 9,5)" required>
+        </div>
+        <div class="col-md-2 col-12">
+            <input type="number" step="0.1" name="turbidez" class="form-control" min="0" placeholder="Turbidez (≤ 4 UNF)" required>
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary btn-sm mt-3">Registrar</button>
+</form>
+
+    <br>
+
+    <!-- Tabla de control diario -->
+    <table class="table table-sm table-hover table-striped">
+        <thead>
+            <tr>
+                <th>Día</th>
+                <th>Punto</th>
+                <th>Cl. Libre<br> <small><small>(≤ 1,0 ppm)</small></small></th>
+                <th>Cl. Comb.<br> <small><small>(≤ 2,0 ppm)</small></small></th>
+                <th>pH<br> <small><small>(6,5 – 9,5)</small></small></th>
+                <th>Turb.<br><small><small>(≤ 4 UNF)</small></small></th>
+                <th>Responsable</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for linea in lineas %}
+            <tr>
+                <td>{{ linea.dia }}</td>
+                <td>{{ linea.punto }}</td>
+                <td style="color: {% if linea.cloro_libre > 1.0 %}red{% endif %};">{{ linea.cloro_libre }}</td>
+                <td style="color: {% if linea.cloro_combinado > 2.0 %}red{% endif %};">{{ linea.cloro_combinado }}</td>
+                <td style="color: {% if linea.ph < 6.5 or linea.ph > 9.5 %}red{% endif %};">{{ linea.ph }}</td>
+                <td style="color: {% if linea.turbidez > 4.0 %}red{% endif %};">{{ linea.turbidez }}</td>
+                <td>{{ linea.responsable }}</td>
+                <td>
+                    <form method="POST" action="{% url 'eliminar_linea_control_diario' control.id %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="dia" value="{{ linea.dia }}">
+                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de que deseas eliminar el día {{ linea.dia }}?')">Eliminar</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{% url 'informes_control_diario' %}" class="btn btn-primary btn-sm">Volver</a>
+    <a href="{% url 'imprime_control_diario' control.id %}" class="btn btn-success btn-sm">Imprimir PDF</a>
+</div>
+{% endblock %}

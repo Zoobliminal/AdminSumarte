@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+{% extends "AdminSumarteApp/base.html" %}
+{% load crispy_forms_tags %}
+<html lang="en">
+
+
+
+{% block title %}
+
+SUMARTE - ADMINISTRACION
+
+{% endblock %}
+
+
+{% block content %} 
+<body>
+  <!-- style="background-color: #19437E;" azul sumarte -->
+
+  <section class="vh-50" style="background-color: #19437E;">
+    <div class="container py-5 h-100">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+          <div class="card shadow-2-strong" style="border-radius: 1rem;">
+            <div class="card-body p-5 text-center">
+
+              <div class="container mt-4">
+                <h2>Crear Nuevo Aviso</h2>
+                <form method="POST">
+                    {% csrf_token %}
+                    {{ form | crispy }}  <!-- Si usas crispy-forms -->
+                    <!-- O puedes usar {{ form.as_p }} si no usas crispy -->
+                    <button type="submit" class="btn btn-primary">Guardar Aviso</button>
+                </form>
+                <a href="{% url 'avisos' %}" class="btn btn-secondary mt-3">Volver</a>
+            </div>
+        
+             
+
+
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  </body>     
+
+
+{% endblock %}
+
+</html>

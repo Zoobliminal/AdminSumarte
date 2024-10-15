@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+{% extends "AdminSumarteApp/base.html" %}
+{% load static %}
+<html lang="en">
+
+
+{% block title %}
+
+{% endblock %}
+
+
+
+{% block content%} 
+    
+<body>
+
+<section class="vh-50 p-6" style="background-color: #19437E;">
+  <div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+        <div class="card shadow-2-strong" style="border-radius: 1rem;">
+          
+          <div class="card-body p-5 text-center">
+
+            <h3 class="mb-5"> <img class="intro-img img-fluid mb-3 mb-lg-0 rounded" src="{% static 'AdminSumarteApp/img/arteixosumarte_logo_azul.png' %}" alt=""></img></h3>
+            <div class="card-body text-center">
+                
+               
+                    <h4 class="text-center">Informes de sanidad</h4>
+                    <div class="text-center mt-4">
+                      <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><a href="{% url 'informes_control_diario' %}">Control Diario</a></li>
+                        <li class="list-group-item">Control Rutina</li>
+                        <li class="list-group-item">Formación</li>
+                        <li class="list-group-item">Inspeccion Depositos Anual</li>
+                        <li class="list-group-item">Inspeccion Depositos Mensual</li>
+                        <li class="list-group-item">Limpieza</li>
+                        <li class="list-group-item">Mantenimiento Infraestructuras</li>
+                        <li class="list-group-item">Mantenimiento Equipos Cloración</li>
+                        <li class="list-group-item">Mantenimiento Equipos</li>
+                        <li class="list-group-item">Tratamiento del agua</li>
+                        <li class="list-group-item">Incidencias</li>
+                        <li class="list-group-item">Proveedores</li>
+                        <li class="list-group-item">Renovación Instalaciones</li>
+                        <li class="list-group-item">Cambios de zona</li>
+                        
+                      </ul>
+                        
+
+                    </div>
+             
+            
+            </div>
+           
+      
+           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</body>  
+
+{% endblock %}
