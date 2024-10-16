@@ -17,8 +17,9 @@ SUMARTE - ADMINISTRACION
 
  <form method="GET" action="{% url 'avisos' %}" id="filtro-avisos-form">
   
-  {% if request.user.is_staff %}
+
     <a class="btn btn-outline-warning btn-sm" href="{% url 'aviso_nuevo' %}" role="button">Insertar Nuevo Aviso</a>
+  {% if request.user.is_staff %}
     <a class="btn btn-outline-warning btn-sm" href="{% url 'avisos_cerrados' %}" role="button">Ver Historial</a>
     <br><br><center><a class="btn btn-outline-warning btn-sm" role="button" id="btn-refresh" onclick="location.reload();">Actualizar datos</a>
   {% else%}
