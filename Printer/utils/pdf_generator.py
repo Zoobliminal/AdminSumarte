@@ -29,10 +29,37 @@ class PDFBase:
     def add_logo(self):
         logo_path = os.path.join(settings.BASE_DIR, 'AdminSumarteApp/static/AdminSumarteApp/img/arteixosumarte_logo_azul.png')
         logo = Image(logo_path)
-        logo.drawHeight = 0.3 * inch
-        logo.drawWidth = 3 * inch
-        self.elements.append(logo)
+        
+        # Obtener dimensiones originales
+        original_width = logo.imageWidth
+        original_height = logo.imageHeight
+        
+        # Definir el nuevo ancho deseado (2 inches)
+        new_width = 3 * inch
+        
+        # Calcular la altura manteniendo la proporción
+        aspect_ratio = original_height / original_width
+        new_height = new_width * aspect_ratio
+        
+        # Asignar las nuevas dimensiones a la imagen
+        logo.drawWidth = new_width
+        logo.drawHeight = new_height
+
+        # Crear una tabla con el logo en la esquina superior izquierda
+        # Usa el ancho total de la página para la tabla
+        table = Table([[logo]], colWidths=[new_width, 6 * inch])  # 6 inches para la segunda columna vacía
+        
+        # Estilo para asegurarse de que esté alineado arriba a la izquierda
+        table.setStyle(TableStyle([
+            ('VALIGN', (0, 0), (0, 0), 'TOP'),
+            ('ALIGN', (0, 0), (0, 0), 'LEFT'),
+            ('ALIGN', (1, 0), (1, 0), 'LEFT')  # Alinea también la columna vacía
+        ]))
+        
+        # Añadir la tabla con el logo
+        self.elements.append(table)
         self.elements.append(Spacer(1, 12))
+        
 
     def add_header(self, text):
         header = Paragraph(text, self.styles['Title'])

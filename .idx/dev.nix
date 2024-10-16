@@ -14,6 +14,7 @@
     pkgs.python311Packages.django
     pkgs.sudo-rs
     pkgs.sudo
+    pkgs.python312
   ];
 
 
