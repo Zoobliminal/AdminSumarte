@@ -6,8 +6,8 @@ class ControlDiarioForm(forms.ModelForm):
         model = ControlDiario
         fields = ['año', 'mes']
         widgets = {
-            'año': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Año'}),
-            'mes': forms.Select(attrs={'class': 'form-control'}),
+            'año': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Año', 'label': 'white'}),
+            'mes': forms.Select(attrs={'class': 'form-control', 'label': ''}),
         }
 
 class ControlDiarioLineaForm(forms.ModelForm):

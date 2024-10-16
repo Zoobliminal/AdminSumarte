@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 {% extends "AdminSumarteApp/base.html" %}
+{% load crispy_forms_tags %}
 {% load static %}
 <html lang="en">
 
@@ -11,12 +12,20 @@
 <div class="container mt-4">
     <h2><p class="text-white">Crear Control Diario</p></h2>
     
-    <form method="post" action="{% url 'crear_control_diario' %}">
+    <form style="width: 100%;" id="nuevo-cpontrol-diario-form" method="POST" action="{% url 'crear_control_diario' %}">
         {% csrf_token %}
-        {{ form.as_table }}  <!-- Esto renderiza cada campo del formulario como un párrafo -->
-        <button type="submit" class="btn btn-primary">Crear Control Diario</button>
+        <div class="row g-3">
+            <div class="col-md-2 col-12">
+                <input type="number" name="año"  class="form-control" placeholder="Año" min="2024" required>
+            </div>
+            <div class="col-md-2 col-12">
+                <input type="number" name="mes" class="form-control" placeholder="Mes" min="1" max="12" required>
+            </div>
+            <div class="col-md-2 col-12"></div>
+            <button type="submit" class="btn btn-primary btn-sm mt-3">Registrar</button>
+            </div>
     </form>
-    </form>
+    <br>
 </div>
 {% endblock %}
 </html>

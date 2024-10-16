@@ -93,10 +93,15 @@ class PDFControlDiario(PDFBase):
         # Crear la tabla con los datos
         data = [['Día', 'Punto', 'Cloro Libre (≤ 1,0 ppm)', 'Cloro Comb.(≤ 2,0 ppm)', 'pH (6,5 – 9,5)', 'Turbidez (≤ 4 UNF)', 'Responsable']]
         lineas = ControlDiarioLinea.objects.filter(control_diario=self.control).order_by('dia')
-        for linea in lineas:
-            data.append([linea.dia, linea.punto, linea.cloro_libre, linea.cloro_combinado, linea.ph, linea.turbidez, linea.responsable.username])
-
-        # Estilo para la tabla
+        
+        # Definir los límites de los parámetros
+        CLORO_LIBRE_MAX = 1.0
+        CLORO_COMBINADO_MAX = 2.0
+        PH_MIN = 6.5
+        PH_MAX = 9.5
+        TURBIDEZ_MAX = 4.0
+        
+        # Estilos condicionales
         table_style = TableStyle([
             ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
             ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
@@ -107,7 +112,31 @@ class PDFControlDiario(PDFBase):
             ('GRID', (0, 0), (-1, -1), 1, colors.black),
         ])
 
-        # Añadir la tabla
+        # Añadir las filas con los valores
+        for i, linea in enumerate(lineas, start=1):
+            # Añadir la fila de datos a la tabla
+            row = [
+                linea.dia,
+                linea.punto,
+                linea.cloro_libre,
+                linea.cloro_combinado,
+                linea.ph,
+                linea.turbidez,
+                linea.responsable.username
+            ]
+            data.append(row)
+
+            # Aplicar colores condicionales
+            if linea.cloro_libre > CLORO_LIBRE_MAX:
+                table_style.add('TEXTCOLOR', (2, i), (2, i), colors.red)  # Cloro Libre fuera de rango
+            if linea.cloro_combinado > CLORO_COMBINADO_MAX:
+                table_style.add('TEXTCOLOR', (3, i), (3, i), colors.red)  # Cloro Combinado fuera de rango
+            if not (PH_MIN <= linea.ph <= PH_MAX):
+                table_style.add('TEXTCOLOR', (4, i), (4, i), colors.red)  # pH fuera de rango
+            if linea.turbidez > TURBIDEZ_MAX:
+                table_style.add('TEXTCOLOR', (5, i), (5, i), colors.red)  # Turbidez fuera de rango
+
+        # Añadir la tabla con el estilo dinámico
         self.add_table(data, table_style)
 
         # Generar el PDF

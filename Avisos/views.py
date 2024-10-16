@@ -3,6 +3,7 @@ from django.contrib import messages
 from django.conf import settings
 from django.urls import reverse_lazy
 from django.utils import timezone
+from django.db.models import Q
 from datetime import timedelta
 from django.utils.decorators import method_decorator
 from django.views.generic import UpdateView
@@ -41,7 +42,10 @@ def avisos(request):
     
     # Filtrar por avisos en los que el usuario conectado está asignado como trabajador y no está finalizado
     if not request.user.is_staff:
-        avisos = avisos.filter(asignamientos__trabajador=request.user, finalizado=False) 
+         avisos = avisos.filter(
+            Q(asignamientos__trabajador=request.user, finalizado=False) |
+            Q(asignamientos__trabajador=None, finalizado=False)  # Avisos no asignados
+         )
     else: #Para los admins mostrar todos los abiertos y cerrados hace menos de 48 horas
         avisos = Aviso.objects.filter(finalizado=False) | Aviso.objects.filter(finalizado=True,fecha_resolucion__gte=ahora - timedelta(hours=48)  
     )

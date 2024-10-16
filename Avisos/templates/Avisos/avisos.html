@@ -17,7 +17,7 @@ SUMARTE - ADMINISTRACION
 
  <form method="GET" action="{% url 'avisos' %}" id="filtro-avisos-form">
   
-
+ 
     <a class="btn btn-outline-warning btn-sm" href="{% url 'aviso_nuevo' %}" role="button">Insertar Nuevo Aviso</a>
   {% if request.user.is_staff %}
     <a class="btn btn-outline-warning btn-sm" href="{% url 'avisos_cerrados' %}" role="button">Ver Historial</a>
@@ -57,7 +57,7 @@ SUMARTE - ADMINISTRACION
                 <table class="table" style: "border: 5px solid orange"> <!-- Cabecero de aviso / hora y estado del aviso / historial-->
                   <tbody>
                     <tr>
-                      <td>{{aviso.created|date:"d/m/Y - H:i"}} | <b>{{aviso.usuario}}</td>
+                      <td>{{aviso.created|date:"d/m/Y - H:i"}}  <b>{{aviso.usuario}}</td>
                       <td class="text-end">{% if aviso.finalizado %}
                         {% if request.user.is_staff %} <!-- Icono de historial para el staff (estado finalizado)-->
                         <a href="#" data-bs-toggle="modal" data-bs-target="#modalHistorialAviso{{ aviso.id }}">
