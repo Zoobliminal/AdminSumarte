@@ -9,23 +9,30 @@
 {% endblock %}
 
 {% block content %}
-<div class="container mt-4">
-    <h2><p class="text-white">Nuevo Cambio de Contador</p></h2>
-    
-    <form style="width: 100%;" id="nuevo-cpontrol-diario-form" method="POST" action="{% url 'registrar_cambio_contador' %}">
-        {% csrf_token %}
-        <div class="row g-3">
-            <div class="col-md-2 col-12">
-                <input type="number" name="año"  class="form-control" placeholder="Año" min="2024" required>
+<section class="vh-50 p-6" style="background-color: #19437E;">
+    <div class="container py-5 h-100">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+          <div class="card shadow-2-strong" style="border-radius: 1rem;">
+            
+            <div class="card-body p-5 text-center">
+  
+              <h2>Cambio de Contador</h2><br>
+              <form method="POST">
+                    {% csrf_token %}
+                    {{ form | crispy }}  
+                   
+                    <button type="submit" class="btn btn-primary">Guardar Cambio</button>
+                </form>
+                <a href="{% url 'cambios_contador' %}" class="btn btn-secondary mt-3">Volver</a>
             </div>
-            <div class="col-md-2 col-12">
-                <input type="number" name="mes" class="form-control" placeholder="Mes" min="1" max="12" required>
+  
             </div>
-            <div class="col-md-2 col-12"></div>
-            <button type="submit" class="btn btn-primary btn-sm mt-3">Registrar</button>
-            </div>
-    </form>
-    <br>
-</div>
+          </div>
+        </div>
+      </div>       
+  </section>
+
+
 {% endblock %}
 </html>
