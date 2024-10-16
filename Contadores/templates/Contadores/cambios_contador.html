@@ -25,11 +25,18 @@ SUMARTE - ADMINISTRACION
 
    
  
-   
+    <div class="mb-3">
+      <a href="{% url 'crear_control_diario' %}" class="btn btn-sm btn-primary">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
+              <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0Zm0 14a6 6 0 1 1 0-12 6 6 0 0 1 0 12Zm.5-6.5a.5.5 0 0 0-.5-.5H7v-1a.5.5 0 0 0-1 0v1H5a.5.5 0 0 0 0 1h1v1a.5.5 0 0 0 1 0v-1h1a.5.5 0 0 0 .5-.5z"/>
+          </svg>
+          Registrar Cambio de Contador
+      </a>
+  </div> 
  
 
     <div class="table-responsive p-2">
-      <table class="table table-primary table-hover table-striped">
+      <table class="table table-sm table-primary table-hover table-striped">
         <thead>
           <tr>
             <th scope="col">CTT</th>
@@ -37,6 +44,7 @@ SUMARTE - ADMINISTRACION
             <th scope="col">Num.Antiguo</th>
             <th scope="col">Num.Nuevo</th>
             <th scope="col">Fecha Cambio</th>
+            <th scope="col">Fecha Registro</th>
             <th scope="col">Actualizado Compass</th>
             <th scope="col">Foto Viejo</th>
             <th scope="col">Foto Nuevo</th>
@@ -50,7 +58,8 @@ SUMARTE - ADMINISTRACION
             <td>{{cambio.direccion}}</td>
             <td>{{cambio.numero_viejo}}</td>
             <td>{{cambio.numero_nuevo}}</td>
-            <td>{{cambio.fecha_cambio}}</td>
+            <td>{{cambio.fecha_cambio | date:"d/m/Y"}}</td>
+            <td>{{cambio.created | date:"d/m/Y"}}</td>
 
             {% if cambio.actualizado_compass is True %}
               <td><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="green" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
