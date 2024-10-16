@@ -4,8 +4,9 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404, redirect
+from django.urls import reverse 
 from .models import ControlDiario, ControlDiarioLinea
-from .forms import ControlDiarioLineaForm
+from .forms import ControlDiarioLineaForm, ControlDiarioForm
 from django.http import HttpResponse
 from reportlab.lib import colors
 from reportlab.lib.pagesizes import letter
@@ -30,9 +31,23 @@ def red_menu(request):
 def red_menu_informes(request):
     return render (request, "Personal_Red/menu_informes.html")
 
+def crear_control_diario(request):
+    if request.method == 'POST':
+        form = ControlDiarioForm(request.POST)
+        if form.is_valid():
+            # Guardar el nuevo control diario en la base de datos
+            form.save()
+            # Redirigir a la lista de controles diarios después de crear uno nuevo
+            return redirect(reverse('informes_control_diario'))  # Cambia el nombre a la vista que maneja la lista
+    else:
+        form = ControlDiarioForm()
+
+    controles = ControlDiario.objects.all().order_by('-año', '-mes')    
+    return render(request, 'Personal_Red/crear_control_diario.html', {'form': form})
+
 @login_required(login_url="/accounts/login/login")
 def informes_control_diario(request):
-    controles = ControlDiario.objects.all().order_by('año', 'mes')
+    controles = ControlDiario.objects.all().order_by('-año', '-mes')
     paginator = Paginator(controles, 12)  # 12 controles por página
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)

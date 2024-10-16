@@ -10,7 +10,7 @@ from reportlab.lib import colors
 from reportlab.lib.pagesizes import letter
 from reportlab.lib.units import inch
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
-from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Image, Paragraph, Spacer
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Image, Paragraph, Spacer, Frame
 from reportlab.pdfgen import canvas
 import os
 
@@ -34,7 +34,7 @@ class PDFBase:
         original_width = logo.imageWidth
         original_height = logo.imageHeight
         
-        # Definir el nuevo ancho deseado (2 inches)
+        # Definir el nuevo ancho deseado (3 inches)
         new_width = 3 * inch
         
         # Calcular la altura manteniendo la proporción
@@ -45,26 +45,20 @@ class PDFBase:
         logo.drawWidth = new_width
         logo.drawHeight = new_height
 
-        # Crear una tabla con el logo en la esquina superior izquierda
-        # Usa el ancho total de la página para la tabla
-        table = Table([[logo]], colWidths=[new_width, 6 * inch])  # 6 inches para la segunda columna vacía
+        # Ajustar la posición del logo utilizando un Frame
+        width, height = letter  # Tamaño de la página
+        # Colocar el logo en la parte superior de la página
+        logo_frame = Frame(0, height - new_height, width=new_width, height=new_height, showBoundary=0)
         
-        # Estilo para asegurarse de que esté alineado arriba a la izquierda
-        table.setStyle(TableStyle([
-            ('VALIGN', (0, 0), (0, 0), 'TOP'),
-            ('ALIGN', (0, 0), (0, 0), 'LEFT'),
-            ('ALIGN', (1, 0), (1, 0), 'LEFT')  # Alinea también la columna vacía
-        ]))
-        
-        # Añadir la tabla con el logo
-        self.elements.append(table)
+        # Añadir el logo a los elementos del PDF
+        self.elements.append(logo)
         self.elements.append(Spacer(1, 12))
-        
 
     def add_header(self, text):
         header = Paragraph(text, self.styles['Title'])
         self.elements.append(header)
         self.elements.append(Spacer(1, 12))
+
 
     def add_table(self, data, table_style):
         table = Table(data)
