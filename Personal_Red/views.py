@@ -25,11 +25,15 @@ from reportlab.lib.styles import getSampleStyleSheet
 
 @login_required(login_url="/accounts/login/login")
 def red_menu(request):
-    return render (request, "Personal_Red/home.html")
+    return render (request, "Personal_Red/menu_Personal_Red.html")
 
 @login_required(login_url="/accounts/login/login")
 def red_menu_informes(request):
     return render (request, "Personal_Red/menu_informes.html")
+
+@login_required(login_url="/accounts/login/login")
+def red_registro_jornada(request):
+    return render (request, "Personal_Red/registro_jornada_Personal_Red.html")
 
 def crear_control_diario(request):
     if request.method == 'POST':
@@ -236,4 +240,4 @@ def enviar_whatsapp(request):
         # Redirigir o renderizar el template
         return redirect('informes')  # O el nombre de la vista a la que deseas redirigir
     else:
-        return render(request, 'personal_red/mi_template.html')  # O la plantilla donde quieras mostrar el formulario
+        return render(request, 'Personal_Red/mi_template.html')  # O la plantilla donde quieras mostrar el formulario

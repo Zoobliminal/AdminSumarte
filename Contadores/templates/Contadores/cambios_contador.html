@@ -48,7 +48,8 @@ SUMARTE - ADMINISTRACION
             <th scope="col">Actualizado Compass</th>
             <th scope="col">Foto Viejo</th>
             <th scope="col">Foto Nuevo</th>
-          </tr>
+            <th scope="col">Trabajador</th>
+            </tr>
         </thead>
         <tbody>
 
@@ -60,6 +61,7 @@ SUMARTE - ADMINISTRACION
             <td>{{cambio.numero_nuevo}}</td>
             <td>{{cambio.fecha_cambio | date:"d/m/Y"}}</td>
             <td>{{cambio.created | date:"d/m/Y"}}</td>
+            
 
             {% if cambio.actualizado_compass is True %}
               <td><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="green" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
@@ -95,7 +97,8 @@ SUMARTE - ADMINISTRACION
                     </div>
                   </div>
                 </div>
-            </td>
+             </td>
+             
     
               
 
@@ -123,7 +126,7 @@ SUMARTE - ADMINISTRACION
                 </div>
               </div>
           </td>
-         
+          <td>{{cambio.asignamiento}}</td>
 
             
           </tr>
