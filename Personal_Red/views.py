@@ -4,9 +4,10 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404, redirect
+from django.utils.dateparse import parse_date
 from django.urls import reverse 
 from .models import ControlDiario, ControlDiarioLinea
-from .forms import ControlDiarioLineaForm, ControlDiarioForm
+from .forms import ControlDiarioLineaForm, ControlDiarioForm,LineaAgendaForm
 from django.http import HttpResponse
 from reportlab.lib import colors
 from reportlab.lib.pagesizes import letter
@@ -32,8 +33,33 @@ def red_menu_informes(request):
     return render (request, "Personal_Red/menu_informes.html")
 
 @login_required(login_url="/accounts/login/login")
-def red_registro_jornada(request):
-    return render (request, "Personal_Red/registro_jornada_Personal_Red.html")
+def vista_calendario(request):
+    return render (request, "Personal_Red/calendario.html")
+
+
+
+
+from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
+from django.utils.dateparse import parse_date  # Asegúrate de tener esta línea
+from .models import LineaAgenda  # Asegúrate de importar tu modelo
+
+@login_required(login_url="/accounts/login/login")
+def calendario_jornada_detalle(request, fecha):
+    # Convierte la fecha de string a objeto date
+    fecha_seleccionada = parse_date(fecha)
+
+    # Filtra las líneas de la agenda según la fecha seleccionada
+    lineas_agenda = LineaAgenda.objects.filter(fecha_inicio=fecha_seleccionada)
+
+    # Pasa los datos al template
+    return render(request, 'Personal_Red/calendario_jornada_detalle.html', {
+        'fecha': fecha_seleccionada,
+        'lineas_agenda': lineas_agenda,
+    })
+
+
+
 
 def crear_control_diario(request):
     if request.method == 'POST':
@@ -48,6 +74,8 @@ def crear_control_diario(request):
 
     controles = ControlDiario.objects.all().order_by('-año', '-mes')    
     return render(request, 'Personal_Red/crear_control_diario.html', {'form': form})
+
+
 
 @login_required(login_url="/accounts/login/login")
 def informes_control_diario(request):

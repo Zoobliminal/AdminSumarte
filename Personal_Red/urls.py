@@ -10,7 +10,8 @@ from . import views
 
 urlpatterns = [
     path('', views.red_menu, name='red_menu'),
-    path('registro_jornada/', views.red_registro_jornada, name='registro_jornada_Personal_Red'),
+    path('vista_calendario/', views.vista_calendario, name='vista_calendario'),
+    path('calendario_jornada_detalle/<str:fecha>/', views.calendario_jornada_detalle, name='calendario_jornada_detalle'),
 
     path('informes/', views.red_menu_informes, name='informes'),
     path('informes_control_diario/', views.informes_control_diario, name='informes_control_diario'),

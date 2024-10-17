@@ -16,7 +16,7 @@ class CambioContador(models.Model):
     lectura_nuevo = models.CharField(max_length=10, blank=True, null=True)
     imagen_nuevo = models.ImageField(upload_to='Contadores', blank=True, null=True, default='Contadores/default.jpg')
     
-    fecha_cambio = models.DateField(auto_now_add=True)  # Se añade automáticamente cuando se crea
+    fecha_cambio = models.DateField(auto_now_add=True, blank=True, null=True)  # Se añade automáticamente cuando se crea
     notas = models.CharField(max_length=500, blank=True, null=True)
     
     actualizado_compass = models.BooleanField(default=False, verbose_name="Actualizado en Compass")  # Por defecto es falso

@@ -1,6 +1,18 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+class LineaAgenda(models.Model): # Modelo para las lineas de la agenda diaria PErsonal_Red
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)  # Asociado al usuario actual
+    fecha_inicio = models.DateField()  # Fecha de inicio del evento
+    hora_inicio = models.TimeField()  # Hora de inicio del evento
+    fecha_fin = models.DateField()  # Fecha de fin del evento
+    hora_fin = models.TimeField()  # Hora de fin del evento
+    descripcion = models.CharField(max_length=255, blank=True, null=True)  # Descripción opcional del evento
+
+    def __str__(self):
+        return f"Evento de {self.usuario.username} desde {self.fecha_inicio} {self.hora_inicio} hasta {self.fecha_fin} {self.hora_fin}"
+
+
 
 # Modelo para el control diario (hoja mensual)
 class ControlDiario(models.Model):

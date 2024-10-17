@@ -15,31 +15,24 @@
 <body>
 
 <section class="vh-50 p-6" style="background-color: #19437E;">
-  <div class="container py-5 h-100">
-    <div class="row d-flex justify-content-center align-items-center h-100">
-      <div class="col-12 col-md-8 col-lg-6 col-xl-5">
-        <div class="card shadow-2-strong" style="border-radius: 1rem;">
-          
-            <div class="card-body p-5 text-center">
-            <h3 class="mb-5"> <img class="intro-img img-fluid mb-3 mb-lg-0 rounded" src="{% static 'AdminSumarteApp/img/arteixosumarte_logo_azul.png' %}" alt=""></img></h3>
                 <div class="card-body text-center">
                     
                 
-                        <h4 class="text-center">Registro Jornada</h4>
-                        <div class="calendar"></div>
+                        <h4 class="text-center p-2" style="color:white">{{user.username}}</h4>
+                        <div class="container-fluid calendar"></div>
                         <style>
                             @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@100;200;300;400;500;600;700&display=swap');
 
                             :root {
-                                --calendar-bg-color: #262829;
-                                --calendar-font-color: #FFF;
+                                --calendar-bg-color: #ffffff;
+                                --calendar-font-color: #2b2b2b;
                                 --weekdays-border-bottom-color: #404040;
                                 --calendar-date-hover-color: #505050;
-                                --calendar-current-date-color: #1b1f21;
-                                --calendar-today-color: linear-gradient(to bottom, #03a9f4, #2196f3);
+                                --calendar-current-date-color: #dbdbdb;
+                                --calendar-today-color: linear-gradient(to bottom, #0060dd9f, #00ccff);
                                 --calendar-today-innerborder-color: transparent;
                                 --calendar-nextprev-bg-color: transparent;
-                                --next-prev-arrow-color : #FFF;
+                                --next-prev-arrow-color : #000000;
                                 --calendar-border-radius: 16px;
                                 --calendar-prevnext-date-color: #484848
                             }
@@ -192,12 +185,9 @@
 
             
                 </div>
-            </div>
-        </div>
-      </div>
-    </div>
-  </div>
+   
 </section>
+<!-- <div class="text-center"><p><small>Calendar Design: Ismail Vittal @ismailvtl</small></p></div> -->
 
 </body>  
 
@@ -280,12 +270,24 @@ function CalendarControl() {
       );
       monthLabel.innerHTML = calendarControl.calMonthName[calendar.getMonth()];
     },
+
     selectDate: function (e) {
       console.log(
         `${e.target.textContent} ${
           calendarControl.calMonthName[calendar.getMonth()]
         } ${calendar.getFullYear()}`
       );
+
+      const day = e.target.textContent; // El número del día seleccionado
+      const month = calendar.getMonth() + 1; // Mes actual (1-12)
+      const year = calendar.getFullYear(); // Año actual
+
+      // Crear la fecha completa en formato YYYY-MM-DD
+      const selectedDate = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+
+      // Redirigir a la nueva vista con la fecha seleccionada
+      window.location.href = `/calendario_jornada_detalle/${selectedDate}/`; // Cambia la URL por la ruta que definiremos en views.py
+
     },
     plotSelectors: function () {
       document.querySelector(

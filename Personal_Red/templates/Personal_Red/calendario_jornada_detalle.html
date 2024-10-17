@@ -23,19 +23,21 @@
           <div class="card-body p-5 text-center">
 
             <h3 class="mb-5"> <img class="intro-img img-fluid mb-3 mb-lg-0 rounded" src="{% static 'AdminSumarteApp/img/arteixosumarte_logo_azul.png' %}" alt=""></img></h3>
-            <div class="card-body text-center">
-                
-               
-                    <h4 class="text-center">Gestión de Red</h4>
-                    <div class="text-center mt-4">
-                        <a href="{% url 'vista_calendario' %}" class="btn btn-sm btn-primary btn-lg">Registro Jornada</a>
-                        <a href= "{% url 'informes' %}" class="btn btn-sm btn-secondary btn-lg">Informes de Sanidad</a><br>
-                        <hr><a href="{% url 'calendario_jornada_detalle' fecha='2024-10-17' %}">Ver detalles del día</a></hr>
-                    </div>
-             
-            
-            </div>
+            <h5>{{ user.username }}</h5>
+            <h6>{{ fecha }}</h6>
            
+
+            {% if eventos %}
+                <ul>
+                    {% for evento in eventos %}
+                        <li>{{ evento.descripcion }} - desde {{ evento.hora_inicio }} hasta {{ evento.hora_fin }}</li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No hay tareas registradas este día.</p>
+            {% endif %}
+
+
       
            </div>
         </div>
