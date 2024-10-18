@@ -1,0 +1,68 @@
+{% extends "AdminSumarteApp/base.html" %}
+  
+{% load static %}
+
+{% load crispy_forms_tags %}
+
+
+
+  
+{% block content %}
+<body>
+  <form method="post" action="">
+    {% csrf_token %}
+    <div style="width: 100%; margin: auto;">
+      <section class="vh-50 p-6" style="background-color: #19437E;">
+        <div class="container py-5 h-100">
+          <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+              <div class="card shadow-2-strong" style="border-radius: 1rem;">
+                <div class="card-body p-5 text-center">
+                  <h3 class="mb-5">
+                    <img class="intro-img img-fluid mb-3 mb-lg-0 rounded" src="{% static 'AdminSumarteApp/img/arteixosumarte_logo_azul.png' %}" alt=""></img>
+                  </h3>
+                  <h4>CALENDARIO</h4>
+                  <!-- Calendario en una tabla -->
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>Lun</th>
+                        <th>Mar</th>
+                        <th>Mié</th>
+                        <th>Jue</th>
+                        <th>Vie</th>
+                        <th>Sáb</th>
+                        <th>Dom</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% for week in weeks %}
+                      <tr>
+                        {% for day in week %}
+                        <td>
+                            {% if day %}
+                            {% with day|date:'Y-m-d' as fecha %}
+                              <a href="{% url 'calendario_dia' fecha %}">
+                                {{ day|date:'d' }}
+                              </a>
+                            {% endwith %}
+                         {% else %}
+                             <a href="{% url 'calendario_dia' '2024-10-17' %}">
+                         {% endif %}
+                          </td>
+                        {% endfor %}
+                      </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>       
+      </section>
+    </div>
+  </form>
+</body>
+{% endblock %}
+

@@ -9,11 +9,11 @@ from . import views
 
 
 urlpatterns = [
-    path('', views.red_menu, name='red_menu'),
-    path('vista_calendario/', views.vista_calendario, name='vista_calendario'),
-    path('calendario_jornada_detalle/<str:fecha>/', views.calendario_jornada_detalle, name='calendario_jornada_detalle'),
+    path('', views.Personal_Red_menu_principal, name='red'),
 
-    path('informes/', views.red_menu_informes, name='informes'),
+    path('calendario_mes/', views.calendario_mes, name='calendario_mes'),
+    path('calendario_dia/<str:fecha>/', views.calendario_dia, name='calendario_dia'),
+    path('informes/', views.Personal_Red_menu_informes, name='informes'),
     path('informes_control_diario/', views.informes_control_diario, name='informes_control_diario'),
     path('crear_control_diario/', views.crear_control_diario, name='crear_control_diario'),
     path('obtener_lineas_informe/<int:control_id>/', views.obtener_lineas_informe, name='obtener_lineas_informe'),

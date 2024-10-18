@@ -1,0 +1,33 @@
+{% extends "AdminSumarteApp/base.html" %}
+  
+{% load static %}
+
+{% load crispy_forms_tags %}
+
+
+
+  
+{% block content %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle de la Jornada del {{ fecha }}</title>
+</head>
+<body>
+    <h1>Detalle de la Jornada para el día {{ fecha }}</h1>
+
+    {% if eventos %}
+        <ul>
+            {% for evento in eventos %}
+                <li>{{ evento.descripcion }} - desde {{ evento.hora_inicio }} hasta {{ evento.hora_fin }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No hay eventos para este día.</p>
+    {% endif %}
+</body>
+</html>
+{% endblock %}
+
