@@ -1,12 +1,8 @@
 {% extends "AdminSumarteApp/base.html" %}
-  
-{% load static %}
 
+{% load static %}
 {% load crispy_forms_tags %}
 
-
-
-  
 {% block content %}
 <!DOCTYPE html>
 <html lang="es">
@@ -16,17 +12,53 @@
     <title>Detalle de la Jornada del {{ fecha }}</title>
 </head>
 <body>
-    <h1>Detalle de la Jornada para el día {{ fecha }}</h1>
+<section class="vh-50 p-6" style="background-color: #19437E;">
+    <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+                <div class="card shadow-2-strong" style="border-radius: 1rem;">
+                    <h6>{{ usuario_actual.username }}</h6>
+                    <h6>{{ fecha }}</h6>
 
-    {% if eventos %}
-        <ul>
-            {% for evento in eventos %}
-                <li>{{ evento.descripcion }} - desde {{ evento.hora_inicio }} hasta {{ evento.hora_fin }}</li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>No hay eventos para este día.</p>
-    {% endif %}
+                    {% if request.user.is_staff %}
+                        <div class="form-group">
+                            <label for="usuario-select">Seleccionar usuario:</label>
+                            <form method="GET">
+                                <select id="usuario-select" name="usuario_id" class="form-control" onchange="this.form.submit()">
+                                    {% for usuario in usuarios %}
+                                        <option value="{{ usuario.id }}" {% if usuario_actual.id == usuario.id %}selected{% endif %}>
+                                            {{ usuario.username }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </form>
+                        </div>
+                    {% endif %}
+
+                    {% if eventos %}
+                        <ul>
+                            {% for evento in eventos %}
+                                <li>{{ evento.descripcion }} - desde {{ evento.hora_inicio }} hasta {{ evento.hora_fin }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p>Sin tareas registradas durante este día.</p>
+                    {% endif %}
+
+                    <!-- Formulario para añadir una tarea -->
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ form|crispy }}  <!-- Renderiza el formulario usando crispy-forms -->
+                        <button type="submit" class="btn btn-primary">Añadir tarea</button>
+                    </form>
+
+                    <!-- Botón de volver al calendario -->
+                    <a href="{% url 'calendario_mes' year=fecha.year month=fecha.month %}" class="btn btn-secondary">Volver al calendario</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 </body>
 </html>
 {% endblock %}

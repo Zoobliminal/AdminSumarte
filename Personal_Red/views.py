@@ -3,13 +3,14 @@ import os
 import calendar
 from datetime import datetime, timedelta
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.contrib import messages
 from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils.dateparse import parse_date
 from django.urls import reverse 
 from .models import ControlDiario, ControlDiarioLinea, LineaAgenda
-from .forms import ControlDiarioLineaForm, ControlDiarioForm,LineaAgendaForm
+from .forms import ControlDiarioLineaForm, ControlDiarioForm,LineaAgendaForm, AgregarTareaForm
 from django.http import HttpResponse
 from reportlab.lib.pagesizes import letter
 from reportlab.lib.units import inch
@@ -23,7 +24,7 @@ from reportlab.pdfgen import canvas
 
 @login_required(login_url="/accounts/login/login")
 def Personal_Red_menu_principal(request):
-    
+
     now = datetime.now()
     año_actual = now.year
     mes_actual = now.month
@@ -89,18 +90,41 @@ def calendario_mes(request, year, month):
 def calendario_dia(request, fecha):
     try:
         # Convertir el string de fecha en un objeto datetime
-        fecha = datetime.strptime(fecha, '%Y-%m-%d').date()
+        fecha_obj = datetime.strptime(fecha, '%Y-%m-%d').date()
     except ValueError:
-        # Si la fecha no es válida, mostrar un error
         return render(request, 'error_template.html', {'error': 'Fecha inválida'})
 
-    # Filtrar las tareas del usuario para la fecha seleccionada
-    tareas = LineaAgenda.objects.filter(usuario=request.user, fecha_inicio=fecha)
+    # Por defecto, seleccionamos las tareas del usuario actual
+    usuario_actual = request.user
 
-    return render(request, 'Personal_Red/calendario_dia.html', {
-        'tareas': tareas,
-        'fecha': fecha,
-    })
+    # Si el usuario es staff, permitimos que vea las tareas de otros usuarios
+    if request.user.is_staff and 'usuario_id' in request.GET:
+        usuario_actual = User.objects.get(id=request.GET.get('usuario_id'))
+
+    # Filtrar las tareas del usuario seleccionado (ya sea el actual o uno seleccionado por staff)
+    eventos = LineaAgenda.objects.filter(usuario=usuario_actual, fecha_inicio=fecha_obj)
+
+    if request.method == 'POST':
+        form = AgregarTareaForm(request.POST)
+        if form.is_valid():
+            linea_agenda = form.save(commit=False)
+            linea_agenda.usuario = request.user
+            linea_agenda.save()
+            return redirect('calendario_dia', fecha=fecha)
+    else:
+        form = AgregarTareaForm()
+
+    # Si el usuario es staff, pasamos también la lista de todos los usuarios
+    usuarios = User.objects.all() if request.user.is_staff else None
+
+    context = {
+        'eventos': eventos,
+        'fecha': fecha_obj,
+        'form': form,
+        'usuarios': usuarios,
+        'usuario_actual': usuario_actual,  # Usuario cuyas tareas se están viendo
+    }
+    return render(request, 'Personal_Red/calendario_dia.html', context)
 
 
 def crear_control_diario(request):
