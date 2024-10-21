@@ -1,13 +1,23 @@
 {% extends "AdminSumarteApp/base.html" %}
   
 {% load static %}
-
 {% load crispy_forms_tags %}
 
-
-
-  
 {% block content %}
+<style>
+  .dia-calendario {
+    text-decoration: none !important;
+    color: #000000; 
+   
+  }
+
+  .dia-calendario:hover {
+  color: #0044d8; /* Color al pasar el mouse */
+  text-decoration: underline; /* Subrayar al pasar el mouse */
+  font-weight: bold;
+}
+</style>
+
 <body>
   <form method="post" action="">
     {% csrf_token %}
@@ -21,7 +31,12 @@
                   <h3 class="mb-5">
                     <img class="intro-img img-fluid mb-3 mb-lg-0 rounded" src="{% static 'AdminSumarteApp/img/arteixosumarte_logo_azul.png' %}" alt=""></img>
                   </h3>
-                  <h4>CALENDARIO</h4>
+                  <h6 >{{ user.username }}</h6>
+                  <!-- Flechas para avanzar y retroceder -->
+                 
+                  <span>{{ current_day|stringformat:"02d" }}/{{ current_month|stringformat:"02d" }}/{{ current_year }}</span>
+                  
+               
                   <!-- Calendario en una tabla -->
                   <table class="table">
                     <thead>
@@ -38,18 +53,15 @@
                     <tbody>
                       {% for week in weeks %}
                       <tr>
-                        {% for day in week %}
+                        {% for dia in week %}
                         <td>
-                            {% if day %}
-                            {% with day|date:'Y-m-d' as fecha %}
-                              <a href="{% url 'calendario_dia' fecha %}">
-                                {{ day|date:'d' }}
-                              </a>
-                            {% endwith %}
-                         {% else %}
-                             <a href="{% url 'calendario_dia' '2024-10-17' %}">
-                         {% endif %}
-                          </td>
+                          {% if dia %}
+                      
+                          <a href="{% url 'calendario_dia' dia %}" class="dia-calendario"> {{ dia|slice:"-2:" }} </a>
+                          {% else %}     
+                              <span></span>
+                          {% endif %}
+                        </td>
                         {% endfor %}
                       </tr>
                       {% endfor %}
@@ -65,4 +77,3 @@
   </form>
 </body>
 {% endblock %}
-

@@ -28,7 +28,9 @@
                
                     <h4 class="text-center">Gestión de Red</h4>
                     <div class="text-center mt-4">                   
-                        <a href="{% url 'calendario_mes' %}" class="btn btn-sm btn-primary btn-lg">Calendario</a>
+                      {% if year and month %}
+                          <a href="{% url 'calendario_mes' year month %}" class="btn btn-sm btn-primary btn-lg">Calendario</a>
+                      {% endif %}
                         <a href= "{% url 'informes' %}" class="btn btn-sm btn-secondary btn-lg">Informes</a>
                     </div>
              

@@ -54,7 +54,7 @@ SUMARTE - ADMINISTRACION
 
               <div class="card-body">
                 
-                <table class="table" style="border: 0px solid rgb(109, 109, 109)"> <!-- Cabecero de aviso / hora y estado del aviso / historial-->
+                <table class="table" style: "border: 5px solid orange"> <!-- Cabecero de aviso / hora y estado del aviso / historial-->
                   <tbody>
                     <tr>
                       <td>{{aviso.created|date:"d/m/Y - H:i"}}  <b>{{aviso.usuario}}</td>
@@ -117,7 +117,7 @@ SUMARTE - ADMINISTRACION
                   
                   
                   {% if request.user.is_staff %} 
-                  <h4 class="card-title"><a hover="text-decoration:none" href="{% url 'editar_aviso' aviso.id %}" >{{ aviso.direccion }}</a></h4>
+                  <h4 class="card-title"><a hover:"text-decoration:none" href="{% url 'editar_aviso' aviso.id %}" >{{ aviso.direccion }}</a></h4>
                   {% else %}
                   <h4 class="card-title">{{ aviso.direccion }}</h4>
                   {% endif %}

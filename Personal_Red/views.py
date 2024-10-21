@@ -1,7 +1,7 @@
 from django.conf import settings
 import os
 import calendar
-from datetime import datetime
+from datetime import datetime, timedelta
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.core.paginator import Paginator
@@ -20,9 +20,18 @@ from reportlab.platypus import Spacer
 from reportlab.pdfgen import canvas
 
 
+
 @login_required(login_url="/accounts/login/login")
 def Personal_Red_menu_principal(request):
-     return render (request, "Personal_Red/Personal_Red_menu_principal.html")
+    
+    now = datetime.now()
+    año_actual = now.year
+    mes_actual = now.month
+    
+    return render(request, 'Personal_Red/Personal_Red_menu_principal.html', {
+        'year': año_actual,
+        'month': mes_actual,
+    })
 
 
 @login_required(login_url="/accounts/login/login")
@@ -37,15 +46,17 @@ def calendario(request):
 
 
 @login_required(login_url="/accounts/login/")
-def calendario_mes(request):
-    # Obtener el mes actual o el seleccionado por el usuario
+def calendario_mes(request, year, month):
+    
+    # Obtener la fecha de hoy
     hoy = datetime.now()
-    year = hoy.year
-    month = hoy.month
+    current_year = hoy.year
+    current_month = hoy.month
+    current_day = hoy.day
 
     # Crear un calendario del mes actual
     cal = calendar.Calendar()
-    weeks = cal.monthdayscalendar(year, month)
+    weeks = cal.monthdayscalendar(current_year, current_month)
 
     # Convertir cada día en la semana en un objeto de fecha, excluyendo los días vacíos (0)
     formatted_days = []
@@ -53,17 +64,22 @@ def calendario_mes(request):
         formatted_week = []
         for day in week:
             if day != 0:  # Excluyendo los días fuera del mes (0)
-                formatted_day = f"{year}-{month:02d}-{day:02d}"  # Formato "YYYY-MM-DD"
+                formatted_day = f"{current_year}-{current_month:02d}-{day:02d}"  # Formato "YYYY-MM-DD"
                 formatted_week.append(formatted_day)
             else:
                 formatted_week.append(None)
         formatted_days.append(formatted_week)
 
+
+    # Pasar los datos al contexto, incluyendo la fecha de hoy
     return render(request, 'Personal_Red/calendario_mes.html', {
         'weeks': formatted_days,
-        'year': year,
-        'month': month,
+        'current_year': current_year,
+        'current_month': current_month,
+        'current_day': current_day,
+    
     })
+
 
 
 
