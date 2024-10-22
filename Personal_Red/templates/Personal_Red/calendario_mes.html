@@ -15,7 +15,14 @@
   color: #0044d8; /* Color al pasar el mouse */
   text-decoration: underline; /* Subrayar al pasar el mouse */
   font-weight: bold;
-}
+  }
+
+  .current-day {
+      background-color: #ffeb3b; /* Un color de fondo llamativo */
+      font-weight: bold;
+      border-radius: 10%;
+      padding: 5px;
+  }
 </style>
 
 <body>
@@ -28,15 +35,16 @@
             <div class="col-12 col-md-8 col-lg-6 col-xl-5">
               <div class="card shadow-2-strong" style="border-radius: 1rem;">
                 <div class="card-body p-5 text-center">
-                  <h3 class="mb-5">
+                  <h5 class="mb-5">
                     <img class="intro-img img-fluid mb-3 mb-lg-0 rounded" src="{% static 'AdminSumarteApp/img/arteixosumarte_logo_azul.png' %}" alt=""></img>
-                  </h3>
-                  <h6 >{{ user.username }}</h6>
-                  <!-- Flechas para avanzar y retroceder -->
+                    <br>{{user.username}}
+                  </h5>
                  
-                  <span>{{ current_day|stringformat:"02d" }}/{{ current_month|stringformat:"02d" }}/{{ current_year }}</span>
+                  <a href="{% url 'calendario_mes' hoy.year hoy.month %}" class="dia-calendario">
+                    <span>{{ hoy.date }}</span>
+                  </a> <br><br>
+
                   
-               
                   <!-- Calendario en una tabla -->
                   <table class="table">
                     <thead>
@@ -56,10 +64,13 @@
                         {% for dia in week %}
                         <td>
                           {% if dia %}
-                      
-                          <a href="{% url 'calendario_dia' dia %}" class="dia-calendario"> {{ dia|slice:"-2:" }} </a>
-                          {% else %}     
-                              <span></span>
+                            {% if dia|slice:"-2:" == current_day|stringformat:"02d" and current_year == hoy.year and current_month == hoy.month %}
+                              <a href="{% url 'calendario_dia' dia %}" class="dia-calendario current-day"> {{ dia|slice:"-2:" }} </a>                             
+                            {% else %}
+                              <a href="{% url 'calendario_dia' dia %}" class="dia-calendario"> {{ dia|slice:"-2:" }} </a>
+                            {% endif %}
+                          {% else %}
+                            <span></span>
                           {% endif %}
                         </td>
                         {% endfor %}
@@ -67,6 +78,20 @@
                       {% endfor %}
                     </tbody>
                   </table>
+                  <div class="d-flex justify-content-between mb-3">
+                    <a href="{% url 'calendario_mes' prev_year prev_month %}" ><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-left-fill" viewBox="0 0 16 16">
+                      <path d="m3.86 8.753 5.482 4.796c.646.566 1.658.106 1.658-.753V3.204a1 1 0 0 0-1.659-.753l-5.48 4.796a1 1 0 0 0 0 1.506z"/>
+                    </svg></a>
+                    
+                    <h4>{{ datetime_mes|date:"F"|capfirst }} {{ current_year }}</h4>
+    
+                   
+                    <a href="{% url 'calendario_mes' next_year next_month %}" ><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-right-fill" viewBox="0 0 16 16">
+                      <path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
+                    </svg></a>
+                  </div>
+
+                 
                 </div>
               </div>
             </div>

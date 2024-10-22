@@ -31,9 +31,6 @@ ALLOWED_HOSTS = [
     'localhost',  # Permitir localhost
     '127.0.0.1',  # Permitir localhost
     '0.0.0.0',
-
-    'f8f8-85-91-67-35.ngrok-free.app',
-    '8f40929ea02b4e812e81e9796fa15857.serveo.net',
     '8000-idx-adminsumarte-1728973718758.cluster-23wp6v3w4jhzmwncf7crloq3kw.cloudworkstations.dev',
     # Agrega cualquier otro dominio que necesites permitir
 ]

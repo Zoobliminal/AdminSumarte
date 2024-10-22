@@ -17,43 +17,45 @@
         <div class="row d-flex justify-content-center align-items-center h-100">
             <div class="col-12 col-md-8 col-lg-6 col-xl-5">
                 <div class="card shadow-2-strong" style="border-radius: 1rem;">
-                    <h6>{{ usuario_actual.username }}</h6>
+                    <div class="card-body p-5">
+                    <h5>{{ user.username }}</h5>
                     <h6>{{ fecha }}</h6>
 
                     {% if request.user.is_staff %}
-                        <div class="form-group">
-                            <label for="usuario-select">Seleccionar usuario:</label>
-                            <form method="GET">
-                                <select id="usuario-select" name="usuario_id" class="form-control" onchange="this.form.submit()">
-                                    {% for usuario in usuarios %}
-                                        <option value="{{ usuario.id }}" {% if usuario_actual.id == usuario.id %}selected{% endif %}>
-                                            {{ usuario.username }}
-                                        </option>
-                                    {% endfor %}
-                                </select>
-                            </form>
-                        </div>
+                        <form method="get" action="">
+                            <label for="usuario_id">Ver tareas de:</label>
+                            <select name="usuario_id" id="usuario_id" class="form-control" onchange="this.form.submit();">
+                                {% for usuario in usuarios %}
+                                    <option value="{{ usuario.id }}" {% if usuario == usuario_actual %}selected{% endif %}>
+                                        {{ usuario.username }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </form>
                     {% endif %}
 
                     {% if eventos %}
                         <ul>
                             {% for evento in eventos %}
-                                <li>{{ evento.descripcion }} - desde {{ evento.hora_inicio }} hasta {{ evento.hora_fin }}</li>
+                                <li>De {{ evento.hora_inicio }} a {{ evento.hora_fin }} - {{ evento.descripcion }} </li>
                             {% endfor %}
                         </ul>
                     {% else %}
                         <p>Sin tareas registradas durante este día.</p>
                     {% endif %}
-
+                    <hr>    
                     <!-- Formulario para añadir una tarea -->
                     <form method="post">
                         {% csrf_token %}
                         {{ form|crispy }}  <!-- Renderiza el formulario usando crispy-forms -->
-                        <button type="submit" class="btn btn-primary">Añadir tarea</button>
-                    </form>
-
+                        <button type="submit" class="btn btn-primary btn-sm">Añadir tarea</button>
+                        
+                    </form><br><br>
+                    <a href="{% url 'calendario_mes' year=fecha.year month=fecha.month %}" class="btn btn-secondary btn-sm">Volver al calendario</a>
+                    <a href="{% url 'calendario_mes' year=fecha.year month=fecha.month %}" class="btn btn-success btn-sm">Exportar PDF</a>
                     <!-- Botón de volver al calendario -->
-                    <a href="{% url 'calendario_mes' year=fecha.year month=fecha.month %}" class="btn btn-secondary">Volver al calendario</a>
+                   
+                </div>
                 </div>
             </div>
         </div>

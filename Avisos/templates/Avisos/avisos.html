@@ -163,7 +163,7 @@ SUMARTE - ADMINISTRACION
 
                         {% if request.user.is_staff %}  <!-- Botón asignamiento solo para administradores -->
                         <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modalAsignarTrabajador{{ aviso.id }}">
-                          Asignamiento
+                          Asignación
                         </button>                    
                         {% endif %}
 
@@ -279,7 +279,7 @@ SUMARTE - ADMINISTRACION
 
 
 
-                <!-- Modal Asignamiento Trabajador-->
+                <!-- Modal Asignacion Trabajador-->
                   <div class="modal fade" id="modalAsignarTrabajador{{ aviso.id }}" tabindex="-1" aria-labelledby="modalAsignarTrabajadorLabel{{ aviso.id }}" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">

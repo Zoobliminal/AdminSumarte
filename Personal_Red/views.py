@@ -10,7 +10,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.utils.dateparse import parse_date
 from django.urls import reverse 
 from .models import ControlDiario, ControlDiarioLinea, LineaAgenda
-from .forms import ControlDiarioLineaForm, ControlDiarioForm,LineaAgendaForm, AgregarTareaForm
+from .forms import ControlDiarioLineaForm, ControlDiarioForm, AgregarTareaForm
 from django.http import HttpResponse
 from reportlab.lib.pagesizes import letter
 from reportlab.lib.units import inch
@@ -40,24 +40,34 @@ def Personal_Red_menu_informes(request):
     return render (request, "Personal_Red/menu_informes.html")
 
 
-@login_required(login_url="/accounts/login/login")
-def calendario(request):
-    return render (request, "Personal_Red/calendario_mes.html")
+# @login_required(login_url="/accounts/login/login")
+# def calendario(request):
+#     return render (request, "Personal_Red/calendario_mes.html")
 
 
 
 @login_required(login_url="/accounts/login/")
-def calendario_mes(request, year, month):
+def calendario_mes(request, year=None, month=None):
     
-    # Obtener la fecha de hoy
+     # Obtener la fecha actual para fallback
     hoy = datetime.now()
-    current_year = hoy.year
-    current_month = hoy.month
+    current_year = year if year else hoy.year
+    current_month = month if month else hoy.month
     current_day = hoy.day
+    fecha_completa = f"{current_year}-{int(current_month):02d}-{int(current_day):02d}"
+    datetime_mes = datetime(current_year, current_month, 1)
+
 
     # Crear un calendario del mes actual
     cal = calendar.Calendar()
     weeks = cal.monthdayscalendar(current_year, current_month)
+
+    # Calcular el mes anterior y siguiente
+    prev_month = month - 1 if month > 1 else 12
+    prev_year = year - 1 if month == 1 else year
+
+    next_month = month + 1 if month < 12 else 1
+    next_year = year + 1 if month == 12 else year
 
     # Convertir cada día en la semana en un objeto de fecha, excluyendo los días vacíos (0)
     formatted_days = []
@@ -75,9 +85,16 @@ def calendario_mes(request, year, month):
     # Pasar los datos al contexto, incluyendo la fecha de hoy
     return render(request, 'Personal_Red/calendario_mes.html', {
         'weeks': formatted_days,
+        'hoy':hoy,
         'current_year': current_year,
         'current_month': current_month,
         'current_day': current_day,
+        'fecha_completa': fecha_completa,
+        'datetime_mes':datetime_mes,
+        'prev_year': prev_year,
+        'prev_month': prev_month,
+        'next_year': next_year,
+        'next_month': next_month,
     
     })
 
@@ -104,15 +121,27 @@ def calendario_dia(request, fecha):
     # Filtrar las tareas del usuario seleccionado (ya sea el actual o uno seleccionado por staff)
     eventos = LineaAgenda.objects.filter(usuario=usuario_actual, fecha_inicio=fecha_obj)
 
+    ultima_tarea = LineaAgenda.objects.filter(usuario=request.user).order_by('-fecha_inicio', '-hora_fin').first()
+
     if request.method == 'POST':
         form = AgregarTareaForm(request.POST)
         if form.is_valid():
             linea_agenda = form.save(commit=False)
             linea_agenda.usuario = request.user
+            linea_agenda.fecha_inicio = fecha_obj
+            linea_agenda.fecha_fin = fecha_obj
             linea_agenda.save()
             return redirect('calendario_dia', fecha=fecha)
     else:
-        form = AgregarTareaForm()
+        # Definir valores por defecto basados en la última tarea
+        initial_data = {}
+        if ultima_tarea:
+            initial_data = {
+                'hora_inicio': ultima_tarea.hora_fin,  # La hora de inicio será la hora de fin de la última tarea
+                'hora_fin': (datetime.combine(fecha_obj, ultima_tarea.hora_fin) + timedelta(hours=1)).time()  # Ejemplo: Una hora más para la hora de fin
+            }
+
+        form = AgregarTareaForm(initial=initial_data)
 
     # Si el usuario es staff, pasamos también la lista de todos los usuarios
     usuarios = User.objects.all() if request.user.is_staff else None
@@ -125,6 +154,7 @@ def calendario_dia(request, fecha):
         'usuario_actual': usuario_actual,  # Usuario cuyas tareas se están viendo
     }
     return render(request, 'Personal_Red/calendario_dia.html', context)
+
 
 
 def crear_control_diario(request):

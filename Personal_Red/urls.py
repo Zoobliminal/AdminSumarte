@@ -12,6 +12,7 @@ urlpatterns = [
     path('', views.Personal_Red_menu_principal, name='red'),
 
     path('calendario_mes/<int:year>/<int:month>/', views.calendario_mes, name='calendario_mes'),
+    path('calendario_mes/', views.calendario_mes, name='calendario_mes_default'),
     path('calendario_dia/<str:fecha>/', views.calendario_dia, name='calendario_dia'),
     path('informes/', views.Personal_Red_menu_informes, name='informes'),
     path('informes_control_diario/', views.informes_control_diario, name='informes_control_diario'),
