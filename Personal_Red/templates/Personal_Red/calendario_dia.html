@@ -20,10 +20,11 @@
                     <div class="card-body p-5">
                     <h5>{{ user.username }}</h5>
                     <h6>{{ fecha }}</h6>
-
+                    
                     {% if request.user.is_staff %}
                         <form method="get" action="">
                             <label for="usuario_id">Ver tareas de:</label>
+                           
                             <select name="usuario_id" id="usuario_id" class="form-control" onchange="this.form.submit();">
                                 {% for usuario in usuarios %}
                                     <option value="{{ usuario.id }}" {% if usuario == usuario_actual %}selected{% endif %}>

@@ -40,11 +40,6 @@ def Personal_Red_menu_informes(request):
     return render (request, "Personal_Red/menu_informes.html")
 
 
-# @login_required(login_url="/accounts/login/login")
-# def calendario(request):
-#     return render (request, "Personal_Red/calendario_mes.html")
-
-
 
 @login_required(login_url="/accounts/login/")
 def calendario_mes(request, year=None, month=None):
@@ -56,16 +51,40 @@ def calendario_mes(request, year=None, month=None):
     current_day = hoy.day
     fecha_completa = f"{current_year}-{int(current_month):02d}-{int(current_day):02d}"
     datetime_mes = datetime(current_year, current_month, 1)
+  
+  # Inicializar usuario_actual al usuario que está conectado por defecto
+    usuario_actual = request.user
+
+     # Si el usuario es staff, permitimos que vea las tareas de otros usuarios
+    if request.user.is_staff and 'usuario_id' in request.GET:
+        try:
+            usuario_actual = User.objects.get(id=request.GET.get('usuario_id'))
+        except User.DoesNotExist:
+            # Manejar el caso donde el usuario no existe, tal vez redirigiendo o mostrando un mensaje
+            print("El usuario seleccionado no existe.")
+            # Mantén al usuario conectado como usuario actual
+            usuario_actual = request.user
+    
+
+    # Obtener todas las tareas del mes para el usuario seleccionado
+    tareas = LineaAgenda.objects.filter(
+        usuario=usuario_actual, 
+        fecha_inicio__year=current_year, 
+        fecha_inicio__month=current_month
+    )
+
+    # Extraer los días en los que hay tareas
+    dias_con_tareas = [tarea.fecha_inicio.day for tarea in tareas]
 
 
     # Crear un calendario del mes actual
     cal = calendar.Calendar()
     weeks = cal.monthdayscalendar(current_year, current_month)
 
+
     # Calcular el mes anterior y siguiente
     prev_month = month - 1 if month > 1 else 12
     prev_year = year - 1 if month == 1 else year
-
     next_month = month + 1 if month < 12 else 1
     next_year = year + 1 if month == 12 else year
 
@@ -80,7 +99,10 @@ def calendario_mes(request, year=None, month=None):
             else:
                 formatted_week.append(None)
         formatted_days.append(formatted_week)
-
+    
+    
+    # Si el usuario es staff, pasamos también la lista de todos los usuarios
+    usuarios = User.objects.all() if request.user.is_staff else None
 
     # Pasar los datos al contexto, incluyendo la fecha de hoy
     return render(request, 'Personal_Red/calendario_mes.html', {
@@ -95,10 +117,10 @@ def calendario_mes(request, year=None, month=None):
         'prev_month': prev_month,
         'next_year': next_year,
         'next_month': next_month,
-    
+        'dias_con_tareas': dias_con_tareas,
+        'usuarios': usuarios,
+        'usuario_actual': usuario_actual,  
     })
-
-
 
 
 

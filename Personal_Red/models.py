@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-class LineaAgenda(models.Model): # Modelo para las lineas de la agenda diaria PErsonal_Red
+class LineaAgenda(models.Model): # Modelo para las lineas de la agenda diaria Personal_Red
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)  # Asociado al usuario actual
     fecha_inicio = models.DateField()  # Fecha de inicio del evento
     hora_inicio = models.TimeField()  # Hora de inicio del evento
