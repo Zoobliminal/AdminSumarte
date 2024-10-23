@@ -74,11 +74,11 @@
                     <td>
                       {% if dia %}
                         {% if dia|slice:"-2:" == current_day|stringformat:"02d" and current_year == hoy.year and current_month == hoy.month %}
-                          <a href="{% url 'calendario_dia' dia %}" class="dia-calendario current-day">{{ dia|slice:"-2:" }}</a>
+                          <a href="{% url 'calendario_dia' dia %}?usuario_id={{ usuario_actual.id }}" class="dia-calendario current-day">{{ dia|slice:"-2:" }}</a>
                         {% elif dia|slice:"-2:"|add:"0" in dias_con_tareas %}
-                          <a href="{% url 'calendario_dia' dia %}" class="dia-calendario dia-con-tareas">{{ dia|slice:"-2:" }}</a>
+                          <a href="{% url 'calendario_dia' dia %}?usuario_id={{ usuario_actual.id }}" class="dia-calendario dia-con-tareas">{{ dia|slice:"-2:" }}</a>
                         {% else %}
-                          <a href="{% url 'calendario_dia' dia %}" class="dia-calendario">{{ dia|slice:"-2:" }}</a>
+                          <a href="{% url 'calendario_dia' dia %}?usuario_id={{ usuario_actual.id }}" class="dia-calendario">{{ dia|slice:"-2:" }}</a>
                         {% endif %}
                       {% else %}
                         <span></span>

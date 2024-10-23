@@ -52,7 +52,7 @@
                         <button type="submit" class="btn btn-primary btn-sm">Añadir tarea</button>
                         
                     </form><br><br>
-                    <a href="{% url 'calendario_mes' year=fecha.year month=fecha.month %}" class="btn btn-secondary btn-sm">Volver al calendario</a>
+                    <a href="{% url 'calendario_mes' year=fecha.year month=fecha.month %}?usuario_id={{ usuario_actual.id }}" class="btn btn-secondary btn-sm">Volver al calendario</a>
                     <a href="{% url 'calendario_mes' year=fecha.year month=fecha.month %}" class="btn btn-success btn-sm">Exportar PDF</a>
                     <!-- Botón de volver al calendario -->
                    
