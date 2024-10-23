@@ -18,17 +18,18 @@ SUMARTE - ADMINISTRACION
  <form method="GET" action="{% url 'avisos' %}" id="filtro-avisos-form">
   
  
-    <a class="btn btn-outline-warning btn-sm" href="{% url 'aviso_nuevo' %}" role="button">Insertar Nuevo Aviso</a>
+    <a class="btn btn-outline-light btn-sm" href="{% url 'aviso_nuevo' %}" role="button">Insertar Nuevo Aviso</a>
   {% if request.user.is_staff %}
-    <a class="btn btn-outline-warning btn-sm" href="{% url 'avisos_cerrados' %}" role="button">Ver Historial</a>
-    <br><br><center><a class="btn btn-outline-warning btn-sm" role="button" id="btn-refresh" onclick="location.reload();">Actualizar datos</a>
-  {% else%}
-    <br><center><a class="btn btn-outline-warning btn-sm" role="button" id="btn-refresh" onclick="location.reload();">Actualizar datos</a>
-    {% comment %} {% else %}  Checkbox para filtrar solo los avisos del usuario conectado
+    <a class="btn btn-outline-light btn-sm" href="{% url 'avisos_cerrados' %}" role="button">Ver Historial</a>
+  {% endif %}  
+    <a class="btn btn-outline-light btn-sm" role="button" id="btn-refresh" onclick="location.reload();">Actualizar datos</a>
+ 
+    
+    <!-- {% comment %} {% else %}  Checkbox para filtrar solo los avisos del usuario conectado
     <label style="color:white" for="mis_avisos" class="p-2">Mostrar sólo mis avisos asignados</label>
     <input type="checkbox" id="mis_avisos" name="mis_avisos" value="1" 
-    {% if request.GET.mis_avisos %}checked{% endif %} onchange="this.form.submit();"> {% endcomment %}
-  {% endif %}
+    {% if request.GET.mis_avisos %}checked{% endif %} onchange="this.form.submit();"> {% endcomment %} -->
+ 
 
   
 </form>
@@ -190,7 +191,7 @@ SUMARTE - ADMINISTRACION
                         </button>
                       </div>
 
-                      {% comment %} <div class="col">
+                      <!-- {% comment %} <div class="col">
                         <button type="button" 
                         {% if aviso.longitud and aviso.latitud  %} class="btn btn-success btn-sm " 
                         {% else %} class="btn btn-secondary btn-sm "  {% endif %} 
@@ -200,7 +201,7 @@ SUMARTE - ADMINISTRACION
                           <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10m0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6"/>
                         </svg>
                         </button>
-                      </div>                 {% endcomment %}
+                      </div>                 {% endcomment %} -->
 
                     </div>
                   </div>

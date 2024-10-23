@@ -1,126 +1,114 @@
 {% extends "AdminSumarteApp/base.html" %}
-  
 {% load static %}
 {% load crispy_forms_tags %}
-
 {% block content %}
 <style>
   .dia-calendario {
-      text-decoration: none !important;
-      color: #000000; 
-    
+    text-decoration: none !important;
+    color: #000000; 
   }
-
   .dia-calendario:hover {
-      color: #0044d8; /* Color al pasar el mouse */
-      text-decoration: underline; /* Subrayar al pasar el mouse */
-      font-weight: bold;
+    color: #0044d8;
+    text-decoration: underline;
+    font-weight: bold;
   }
-
   .current-day {
-      background-color: #ffeb3b; /* Un color de fondo llamativo */
-      font-weight: bold;
-      border-radius: 10%;
-      padding: 5px;
+    background-color: #ffeb3b;
+    font-weight: bold;
+    border-radius: 10%;
+    padding: 5px;
   }
   .dia-con-tareas {
     color: #00b10f;
     font-weight: bold;
   }
-
 </style>
 
-<body>
-  <form method="post" action="">
-    {% csrf_token %}
-    <div style="width: 100%; margin: auto;">
-      <section class="vh-50 p-6" style="background-color: #19437E;">
-        <div class="container py-5 h-100">
-          <div class="row d-flex justify-content-center align-items-center h-100">
-            <div class="col-12 col-md-8 col-lg-6 col-xl-5">
-              <div class="card shadow-2-strong" style="border-radius: 1rem;">
-                <div class="card-body p-5 text-center">
-                  <h5 class="mb-5">
-                    <img class="intro-img img-fluid mb-3 mb-lg-0 rounded" src="{% static 'AdminSumarteApp/img/arteixosumarte_logo_azul.png' %}" alt=""></img>
-                    <br>{{user.username}}
-                  </h5>
-                
-                  {% if request.user.is_staff %}
-                  <form method="get" action="">
-                    <label for="usuario_id">Ver calendario de:</label>
-                    <select name="usuario_id" id="usuario_id" class="form-control" onchange="this.form.submit();">
-                      {% for usuario in usuarios %}
-                        <option value="{{ usuario.id }}" {% if usuario.id == usuario_actual.id %}selected{% endif %}>
-                          {{ usuario.username }}
-                        </option>
-                      {% endfor %}
-                    </select>
-                  </form>
-                {% endif %}
+<div style="width: 100%; margin: auto;">
+  <section class="vh-50 p-6" style="background-color: #19437E;">
+    <div class="container py-5 h-100">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+          <div class="card shadow-2-strong" style="border-radius: 1rem;">
+            <div class="card-body p-5 text-center">
+              <h5 class="mb-5">
+                <img class="intro-img img-fluid mb-3 mb-lg-0 rounded" src="{% static 'AdminSumarteApp/img/arteixosumarte_logo_azul.png' %}" alt=""></img>
+                <br>{{user.username}}
+              </h5>
+              
+              {% if request.user.is_staff %}
+              <form method="get" action="">
+                <label for="usuario_id">Ver calendario de:</label>
+                <select name="usuario_id" id="usuario_id" class="form-control" onchange="this.form.submit();">
+                  {% for usuario in usuarios %}
+                    <option value="{{ usuario.id }}" {% if usuario.id == usuario_actual.id %}selected{% endif %}>
+                      {{ usuario.username }}
+                    </option>
+                  {% endfor %}
+                </select>
+              </form>
+              {% endif %}
 
-                  <br>
-                  <a href="{% url 'calendario_mes' hoy.year hoy.month %}" class="dia-calendario">
-                    <span>{{hoy|date:"l"|capfirst}}, {{ hoy.date }}</span>
-                  </a> <br><br>
+              <br>
+              <a href="{% url 'calendario_mes' hoy.year hoy.month %}" class="dia-calendario">
+                <span>{{hoy|date:"l"|capfirst}}, {{ hoy.date }}</span>
+              </a> <br><br>
 
-                  
-                  <!-- Calendario en una tabla -->
-                  <table class="table">
-                    <thead>
-                      <tr>
-                        <th>Lu</th>
-                        <th>Ma</th>
-                        <th>Mi</th>
-                        <th>Ju</th>
-                        <th>Vi</th>
-                        <th>Sá</th>
-                        <th>Do</th>
-                        
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {% for week in weeks %}
-                      <tr>
-                        {% for dia in week %}
-                        <td>
-                          {% if dia %}
-                          {% if dia|slice:"-2:" == current_day|stringformat:"02d" and current_year == hoy.year and current_month == hoy.month %}
-                            <a href="{% url 'calendario_dia' dia %}" class="dia-calendario current-day">{{ dia|slice:"-2:" }}</a>
-                          {% elif dia|slice:"-2:"|add:"0" in dias_con_tareas %}
-                            <a href="{% url 'calendario_dia' dia %}" class="dia-calendario dia-con-tareas">{{ dia|slice:"-2:" }}</a>
-                          {% else %}
-                            <a href="{% url 'calendario_dia' dia %}" class="dia-calendario">{{ dia|slice:"-2:" }}</a>
-                          {% endif %}
+              <!-- Calendario en una tabla -->
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Lu</th>
+                    <th>Ma</th>
+                    <th>Mi</th>
+                    <th>Ju</th>
+                    <th>Vi</th>
+                    <th>Sá</th>
+                    <th>Do</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for week in weeks %}
+                  <tr>
+                    {% for dia in week %}
+                    <td>
+                      {% if dia %}
+                        {% if dia|slice:"-2:" == current_day|stringformat:"02d" and current_year == hoy.year and current_month == hoy.month %}
+                          <a href="{% url 'calendario_dia' dia %}" class="dia-calendario current-day">{{ dia|slice:"-2:" }}</a>
+                        {% elif dia|slice:"-2:"|add:"0" in dias_con_tareas %}
+                          <a href="{% url 'calendario_dia' dia %}" class="dia-calendario dia-con-tareas">{{ dia|slice:"-2:" }}</a>
                         {% else %}
-                          <span></span>
+                          <a href="{% url 'calendario_dia' dia %}" class="dia-calendario">{{ dia|slice:"-2:" }}</a>
                         {% endif %}
-                        </td>
-                        {% endfor %}
-                      </tr>
-                      {% endfor %}
-                    </tbody>
-                  </table>
-                  <div class="d-flex justify-content-between mb-3">
-                    <a href="{% url 'calendario_mes' prev_year prev_month %}" ><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-left-fill" viewBox="0 0 16 16">
-                      <path d="m3.86 8.753 5.482 4.796c.646.566 1.658.106 1.658-.753V3.204a1 1 0 0 0-1.659-.753l-5.48 4.796a1 1 0 0 0 0 1.506z"/>
-                    </svg></a>
-                    
-                    <h5>{{ datetime_mes|date:"F"|capfirst }} {{ current_year }}</h5>
-    
-                   
-                    <a href="{% url 'calendario_mes' next_year next_month %}" ><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-right-fill" viewBox="0 0 16 16">
-                      <path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
-                    </svg></a>
-                  </div>
-
-                 
-                </div>
+                      {% else %}
+                        <span></span>
+                      {% endif %}
+                    </td>
+                    {% endfor %}
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+              
+              <div class="d-flex justify-content-between mb-3">
+                <a href="{% url 'calendario_mes' prev_year prev_month %}">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-left-fill" viewBox="0 0 16 16">
+                    <path d="m3.86 8.753 5.482 4.796c.646.566 1.658.106 1.658-.753V3.204a1 1 0 0 0-1.659-.753l-5.48 4.796a1 1 0 0 0 0 1.506z"/>
+                  </svg>
+                </a>
+                <h5>{{ datetime_mes|date:"F"|capfirst }} {{ current_year }}</h5>
+                <a href="{% url 'calendario_mes' next_year next_month %}">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-right-fill" viewBox="0 0 16 16">
+                    <path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
+                  </svg>
+                </a>
               </div>
+
             </div>
           </div>
-        </div>       
-      </section>
-    </div>
-  </form>
-</body>
+        </div>
+      </div>
+    </div>       
+  </section>
+</div>
 {% endblock %}

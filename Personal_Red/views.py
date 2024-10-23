@@ -1,25 +1,30 @@
+# Django core imports
 from django.conf import settings
-import os
-import calendar
-from datetime import datetime, timedelta
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404, redirect
+from django.urls import reverse
+from django.http import HttpResponse
+
+# Utilities
+import os
+import calendar
+from datetime import datetime, timedelta
 from django.utils.dateparse import parse_date
-from django.urls import reverse 
+
+# Models and Forms
 from .models import ControlDiario, ControlDiarioLinea, LineaAgenda
 from .forms import ControlDiarioLineaForm, ControlDiarioForm, AgregarTareaForm
-from django.http import HttpResponse
+
+# ReportLab for PDF generation
 from reportlab.lib.pagesizes import letter
 from reportlab.lib.units import inch
 from reportlab.lib import colors
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
-from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Image, Paragraph
-from reportlab.platypus import Spacer
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Image, Paragraph, Spacer
 from reportlab.pdfgen import canvas
-
 
 
 @login_required(login_url="/accounts/login/login")
@@ -52,19 +57,14 @@ def calendario_mes(request, year=None, month=None):
     fecha_completa = f"{current_year}-{int(current_month):02d}-{int(current_day):02d}"
     datetime_mes = datetime(current_year, current_month, 1)
   
-  # Inicializar usuario_actual al usuario que está conectado por defecto
+    # Por defecto, seleccionamos las tareas del usuario actual
     usuario_actual = request.user
 
-     # Si el usuario es staff, permitimos que vea las tareas de otros usuarios
+    # Si el usuario es staff, permitimos que vea las tareas de otros usuarios
     if request.user.is_staff and 'usuario_id' in request.GET:
-        try:
-            usuario_actual = User.objects.get(id=request.GET.get('usuario_id'))
-        except User.DoesNotExist:
-            # Manejar el caso donde el usuario no existe, tal vez redirigiendo o mostrando un mensaje
-            print("El usuario seleccionado no existe.")
-            # Mantén al usuario conectado como usuario actual
-            usuario_actual = request.user
-    
+        usuario_actual = User.objects.get(id=request.GET.get('usuario_id'))
+
+  
 
     # Obtener todas las tareas del mes para el usuario seleccionado
     tareas = LineaAgenda.objects.filter(
