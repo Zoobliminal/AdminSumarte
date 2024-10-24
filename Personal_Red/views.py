@@ -145,6 +145,11 @@ def calendario_dia(request, fecha):
 
     ultima_tarea = LineaAgenda.objects.filter(usuario=request.user).order_by('-fecha_inicio', '-hora_fin').first()
 
+    # Calcular día anterior y siguiente
+    dia_anterior = fecha_obj - timedelta(days=1)
+    dia_siguiente = fecha_obj + timedelta(days=1)
+
+
     if request.method == 'POST':
         form = AgregarTareaForm(request.POST)
         if form.is_valid():
@@ -173,10 +178,28 @@ def calendario_dia(request, fecha):
         'fecha': fecha_obj,
         'form': form,
         'usuarios': usuarios,
-        'usuario_actual': usuario_actual,  # Usuario cuyas tareas se están viendo
+        'usuario_actual': usuario_actual,
+        'dia_anterior': dia_anterior,
+        'dia_siguiente': dia_siguiente,
+
     }
     return render(request, 'Personal_Red/calendario_dia.html', context)
 
+
+
+@login_required
+def eliminar_linea_agenda(request, linea_id):
+    # Obtener el registro específico
+    linea = get_object_or_404(LineaAgenda, id=linea_id)
+
+    # Verificar si el usuario actual es el propietario del registro
+    if linea.usuario == request.user:
+        # Obtener el año y mes de la tarea
+        fecha = linea.fecha_inicio 
+        linea.delete()
+
+    # Redirigir al calendario del mes correspondiente
+    return redirect('calendario_dia', fecha=fecha)
 
 
 def crear_control_diario(request):

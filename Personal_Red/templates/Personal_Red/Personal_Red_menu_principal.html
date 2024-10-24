@@ -11,7 +11,26 @@
 
 
 {% block content%} 
-    
+
+<style>
+        /* Estilo básico del botón */
+        .btn {
+            border: none;
+            background-color: transparent;
+            padding: 10px;
+            transition: all  ease;
+        }
+        
+        /* Hover sobre el botón */
+        .btn:hover svg {
+            fill: #22a508; /* Cambia el color del ícono al hacer hover */
+            transform: scale(1.3); /* Aumenta el tamaño ligeramente */
+        }
+        
+        .btn:hover {
+            cursor: pointer; /* Cambia el cursor a pointer al hacer hover */
+        }
+</style>
 <body>
 
 <section class="vh-50 p-6" style="background-color: #19437E;">
@@ -26,12 +45,54 @@
             <div class="card-body text-center">
                 
                
-                    <h4 class="text-center">Gestión de Red</h4>
-                    <div class="text-center mt-4">                   
-                      {% if year and month %}
-                          <a href="{% url 'calendario_mes' year month %}" class="btn btn-sm btn-primary btn-lg">Calendario</a>
-                      {% endif %}
-                        <a href= "{% url 'informes' %}" class="btn btn-sm btn-secondary btn-lg">Informes</a>
+                  <h5 class="text-center">Gestión de Red</h5>
+                  <div class="text-center mt-4">       
+                      
+                     
+                      
+
+                     
+                      <div class="container">
+                            <div class="row">
+                            <div class="col-4 "> 
+                              <a href="{% url 'calendario_mes' year month %}" class="btn">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="Black" class="bi bi-person-lines-fill" viewBox="0 0 16 16">
+                                <path d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m-5 6s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zM11 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5m.5 2.5a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1zm2 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1zm0 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1z"/>
+                              </svg> 
+                            </a>
+                            </div>
+
+                            <div class="col-4">
+                              <a href= "{% url 'informes' %}" class="btn">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="Black" class="bi bi-journal-medical" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M8 4a.5.5 0 0 1 .5.5v.634l.549-.317a.5.5 0 1 1 .5.866L9 6l.549.317a.5.5 0 1 1-.5.866L8.5 6.866V7.5a.5.5 0 0 1-1 0v-.634l-.549.317a.5.5 0 1 1-.5-.866L7 6l-.549-.317a.5.5 0 0 1 .5-.866l.549.317V4.5A.5.5 0 0 1 8 4M5 9.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5"/>
+                                <path d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2"/>
+                                <path d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1z"/>
+                              </svg> 
+                            </a></div>   
+
+                            <div class="col-4"> 
+                              <a href= "{% url 'informes' %}" class="btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="Black" class="bi bi-buildings-fill" viewBox="0 0 16 16">
+                                  <path d="M15 .5a.5.5 0 0 0-.724-.447l-8 4A.5.5 0 0 0 6 4.5v3.14L.342 9.526A.5.5 0 0 0 0 10v5.5a.5.5 0 0 0 .5.5h9a.5.5 0 0 0 .5-.5V14h1v1.5a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5zM2 11h1v1H2zm2 0h1v1H4zm-1 2v1H2v-1zm1 0h1v1H4zm9-10v1h-1V3zM8 5h1v1H8zm1 2v1H8V7zM8 9h1v1H8zm2 0h1v1h-1zm-1 2v1H8v-1zm1 0h1v1h-1zm3-2v1h-1V9zm-1 2h1v1h-1zm-2-4h1v1h-1zm3 0v1h-1V7zm-2-2v1h-1V5zm1 0h1v1h-1z"/>
+                                </svg>
+                            </a>
+                            </div>
+                        </div>
+                        <!-- <div class="row border">
+                            <div class="col-4"><a href="{% url 'calendario_mes' year month %}" class="btn">Horarios</a>
+                              
+                            </div>
+                            <div class="col-4"><a href= "{% url 'informes' %}" class="btn">Informes</a>
+                              
+                            </div>
+                            <div class="col-4"><a href= "{% url 'informes' %}" class="btn">Instalaciones</a>
+                              
+                            </div>
+                        </div> -->
+                    </div>
+                    
+                   
                     </div>
              
             
