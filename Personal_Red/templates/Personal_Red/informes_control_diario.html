@@ -20,11 +20,8 @@
     <div class="table-responsive table-sm">
       <h6><p class="text-white">REGISTRO – CONTROL DIARIO EN DEPÓSITO Y RED (ROTANDO PUNTOS)</p></h6>
         <div class="mb-3">
-            <a href="{% url 'crear_control_diario' %}" class="btn btn-sm btn-success">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
-                    <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0Zm0 14a6 6 0 1 1 0-12 6 6 0 0 1 0 12Zm.5-6.5a.5.5 0 0 0-.5-.5H7v-1a.5.5 0 0 0-1 0v1H5a.5.5 0 0 0 0 1h1v1a.5.5 0 0 0 1 0v-1h1a.5.5 0 0 0 .5-.5z"/>
-                </svg>
-                Abrir Nueva Hoja Mensual
+            <a href="{% url 'crear_control_diario' %}" class="btn btn-outline-light btn-sm">
+               Abrir Nueva Hoja Mensual
             </a>
         </div> 
         <table class="table table-sm table-hover table-striped">
@@ -45,7 +42,7 @@
                
                 <td >
                         
-                    <a href="{% url 'obtener_lineas_informe' control.id %}" class="btn btn-primary btn-sm">
+                    <a href="{% url 'obtener_lineas_informe' control.id %}" class="btn btn-outline-dark btn-sm">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
                             <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
                             <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"/>
@@ -79,14 +76,14 @@
             {% endif %}
         </ul>
     </nav>
-
+    <a href="{% url 'informes' %}" class="btn btn-outline-light btn-sm">Volver a informes</a><br><br>
     {% else %}
     <div class="alert alert-info" role="alert">
         No hay controles diarios disponibles.
     </div>
     {% endif %}
   </div>
-
+    
 
 {% endblock %}
 </html>

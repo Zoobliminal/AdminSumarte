@@ -45,6 +45,11 @@ def Personal_Red_menu_informes(request):
     return render (request, "Personal_Red/menu_informes.html")
 
 
+@login_required(login_url="/accounts/login/login")
+def Personal_Red_menu_instalaciones(request):
+    return render (request, "Personal_Red/menu_instalaciones.html")
+
+
 
 @login_required(login_url="/accounts/login/")
 def calendario_mes(request, year=None, month=None):

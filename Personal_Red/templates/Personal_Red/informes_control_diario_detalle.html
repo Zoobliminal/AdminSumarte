@@ -32,7 +32,7 @@
             <input type="number" step="0.1" name="turbidez" class="form-control" min="0" placeholder="Turbidez (≤ 4 UNF)" required>
         </div>
     </div>
-    <button type="submit" class="btn btn-primary btn-sm mt-3">Registrar</button>
+    <button type="submit" class="btn btn-outline-light btn-sm mt-3">Registrar</button>
 </form>
 
     <br>
@@ -73,7 +73,8 @@
         </tbody>
     </table>
 
-    <a href="{% url 'informes_control_diario' %}" class="btn btn-primary btn-sm">Volver</a>
-    <a href="{% url 'imprime_control_diario' control.id %}" class="btn btn-success btn-sm">Imprimir PDF</a>
+    <a href="{% url 'informes_control_diario' %}" class="btn btn-outline-light btn-sm">Volver</a>
+    <a href="{% url 'imprime_control_diario' control.id %}" class="btn btn-outline-light btn-sm">Imprimir PDF</a>
+    <br><br>
 </div>
 {% endblock %}

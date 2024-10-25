@@ -13,31 +13,13 @@ SUMARTE - ADMINISTRACION
 
 {% block content %} 
 
- <!-- ALTERNA BOTON NUEVO AVISO / CHECK BOX SOLO MIS AVISOS ASIGNADOS -->
-
- <form method="GET" action="{% url 'avisos' %}" id="filtro-avisos-form">
-  
- 
-    <a class="btn btn-outline-light btn-sm" href="{% url 'aviso_nuevo' %}" role="button">Insertar Nuevo Aviso</a>
-  {% if request.user.is_staff %}
-    <a class="btn btn-outline-light btn-sm" href="{% url 'avisos_cerrados' %}" role="button">Ver Historial</a>
-  {% endif %}  
-    <a class="btn btn-outline-light btn-sm" role="button" id="btn-refresh" onclick="location.reload();">Actualizar datos</a>
- 
-    
-    <!-- {% comment %} {% else %}  Checkbox para filtrar solo los avisos del usuario conectado
-    <label style="color:white" for="mis_avisos" class="p-2">Mostrar sólo mis avisos asignados</label>
-    <input type="checkbox" id="mis_avisos" name="mis_avisos" value="1" 
-    {% if request.GET.mis_avisos %}checked{% endif %} onchange="this.form.submit();"> {% endcomment %} -->
- 
-
-  
-</form>
-
-
-   
- 
- <!-- Fin Checkbox Mis avisos -->
+    <div class="container mt-4 d-flex justify-content-center text-center">
+      <a class="btn btn-outline-light btn-sm" href="{% url 'aviso_nuevo' %}" role="button">Insertar Nuevo Aviso</a>
+      {% if request.user.is_staff %}
+      <a class="btn btn-outline-light btn-sm mx-2" href="{% url 'avisos_cerrados' %}" role="button">Ver Historial</a>
+      {% endif %}
+      <a class="btn btn-outline-light btn-sm" role="button" id="btn-refresh" onclick="location.reload();">Actualizar datos</a>
+    </div>
 
  <!-- Lista de avisos -->
  <div class="container mt-4">
