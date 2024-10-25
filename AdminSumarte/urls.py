@@ -26,6 +26,7 @@ urlpatterns = [
     path('personal_red/', include('Personal_Red.urls')),
     path('registro/', include('Autenticacion.urls')),
     path('contadores/', include('Contadores.urls')),
+    path('instalaciones/', include('Instalaciones.urls')),
     path('printer/', include('Printer.urls')),
     path('', include('AdminSumarteApp.urls')),
     path("accounts/login/", include('Autenticacion.urls')),

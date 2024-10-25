@@ -7,7 +7,13 @@
       
       <div class="container-fluid">
         <!-- <img src="https://sumarte.gal/wp-content/uploads/2022/03/arteixosumarte_logo_blanco.png" width="200" height="20" alt="logo-black"> -->
-        <a class="navbar-brand" {% if request.user.is_staff %}href="{% url 'admin:index' %}" {% endif %} &copy;> Arteixo / Sumarte </a>
+        
+        {% if request.user.is_staff %}
+            <a class="navbar-brand" href="{% url 'admin:index' %}">&copy; Arteixo / Sumarte</a>
+        {% else %}
+            <a class="navbar-brand" href="{% url 'home' %}">&copy; Arteixo / Sumarte</a>
+        {% endif %}
+
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>

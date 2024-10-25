@@ -9,23 +9,37 @@
 {% endblock %}
 
 {% block content %}
-<div class="container mt-4">
-    <h2><p class="text-white">Crear Control Diario</p></h2>
+<body>
+    <section class="vh-50 p-6" style="background-color: #19437E;">
+        <div class="container py-5 h-100">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+                    <div class="card shadow-2-strong" style="border-radius: 1rem;">
+                        <div class="card-body p-5">
+                            <h5><p class="text-black">CONTROL DIARIO</p></h5>
     
-    <form style="width: 100%;" id="nuevo-cpontrol-diario-form" method="POST" action="{% url 'crear_control_diario' %}">
-        {% csrf_token %}
-        <div class="row g-3">
-            <div class="col-md-2 col-12">
-                <input type="number" name="año"  class="form-control" placeholder="Año" min="2024" required>
+                            <form style="width: 100%;" id="nuevo-cpontrol-diario-form" method="POST" action="{% url 'crear_control_diario' %}">
+                                {% csrf_token %}
+                                <div class="row g-3">
+                                    <div class="col-md-6 col-12">
+                                        <input type="number" name="año"  class="form-control" placeholder="Año" min="2024" required>
+                                    </div>
+                                    <div class="col-md-6 col-12">
+                                        <input type="number" name="mes" class="form-control" placeholder="Mes" min="1" max="12" required>
+                                    </div>
+                                    <div class="col-md-6 col-12"></div>
+                                    <button type="submit" class="btn btn-outline-dark btn-sm">Abrir nueva hoja</button>
+                                    </div>
+                            </form>
+                        
+                       
+                    </div>
+                    </div>
+                </div>
             </div>
-            <div class="col-md-2 col-12">
-                <input type="number" name="mes" class="form-control" placeholder="Mes" min="1" max="12" required>
-            </div>
-            <div class="col-md-2 col-12"></div>
-            <button type="submit" class="btn btn-outline-light btn-sm">Registrar</button>
-            </div>
-    </form>
-    <br>
-</div>
+        </div>
+    </section>
+
+</body>
 {% endblock %}
 </html>

@@ -53,4 +53,4 @@ class ControlDiarioLineaForm(forms.ModelForm):
             'ph': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Nivel de pH', 'step': '0.1'}),
             'turbidez': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Turbidez (UNF)', 'step': '0.1'}),
         }
-
+    

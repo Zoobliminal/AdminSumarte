@@ -10,20 +10,16 @@
 {% block content %}
 <div class="container mt-4">
     
-      <h2><p class="text-white">Control Diario</p></h2>
+      <h2><p class="text-white">Controles periódicos: Cloro / Ph / Turbidez</p>
+        <p class="text-white"></p></h2>
 
-         <!-- Botón para añadir nuevo informe de control diario -->
-    
+         
 
     <!-- Verifica si hay controles diarios -->
     {% if controles %}
     <div class="table-responsive table-sm">
-      <h6><p class="text-white">REGISTRO – CONTROL DIARIO EN DEPÓSITO Y RED (ROTANDO PUNTOS)</p></h6>
-        <div class="mb-3">
-            <a href="{% url 'crear_control_diario' %}" class="btn btn-outline-light btn-sm">
-               Abrir Nueva Hoja Mensual
-            </a>
-        </div> 
+      <h6><p class="text-white">CONTROL DIARIO EN DEPÓSITO Y RED (ROTANDO PUNTOS) </p></h6>
+        <p class="text-white">Hoy es {{ fecha|date:"d/m/Y" }}</p>
         <table class="table table-light table-sm table-hover table-striped">
             <thead>
                 <tr>
@@ -75,14 +71,22 @@
                 <li class="page-item"><a class="page-link" href="?page={{ controles.next_page_number }}">Siguiente</a></li>
             {% endif %}
         </ul>
+        <div class="mb-3">
+            <a href="{% url 'crear_control_diario' %}" class="btn btn-outline-light btn-sm">Abrir Nueva Hoja Mensual</a>
+            <a href="{% url 'informes' %}" class="btn btn-outline-light btn-sm">Volver a menú</a><br>
+        </div> 
     </nav>
-    <a href="{% url 'informes' %}" class="btn btn-outline-light btn-sm">Volver a informes</a><br><br>
+
+    
+
     {% else %}
     <div class="alert alert-info" role="alert">
         No hay controles diarios disponibles.
     </div>
     {% endif %}
   </div>
+
+  
     
 
 {% endblock %}

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+{% extends "AdminSumarteApp/base.html" %}
+{% load static %}
+<html lang="en">
+
+
+{% block title %}
+
+{% endblock %}
+
+
+
+{% block content%} 
+<style>
+    .map-container {
+        text-align: center;
+        margin: 0px;
+    }
+    iframe {
+        width: 100%;
+        max-width: 100%; 
+        height: 600px;
+        border: none; 
+    }
+</style>
+
+<body>
+    
+    <div class="map-container">
+        <iframe src="https://www.google.com/maps/d/u/3/embed?mid=1eCmu67eza0qc6CxMJ2arH2JOqcpvnxI&ehbc=2E312F" width="640" height="480"></iframe>
+    </div>
+</body>
+
+{% endblock %}

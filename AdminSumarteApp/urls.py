@@ -5,10 +5,10 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('', views.home, name="home"),
-    path('gestion_corte/', views.gestion_corte, name="gestion_corte"),
-    path('calendario_jornada/', views.calendario_jornada, name="calendario_jornada"),
-    path('busca_hoja_jornada/', views.busca_hoja_jornada, name="busca_hoja_jornada"),
-    path('fichaje/', views.fichaje, name="fichaje"),
+    # path('gestion_corte/', views.gestion_corte, name="gestion_corte"),
+    # path('calendario_jornada/', views.calendario_jornada, name="calendario_jornada"),
+    # path('busca_hoja_jornada/', views.busca_hoja_jornada, name="busca_hoja_jornada"),
+    # path('fichaje/', views.fichaje, name="fichaje"),
 ]
 
 # linea para la configuracion de la url de los archivos media

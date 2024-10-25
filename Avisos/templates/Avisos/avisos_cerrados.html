@@ -10,13 +10,14 @@ SUMARTE - ADMINISTRACION
     <div class="card text-center"><h5 class="card-title">HISTORIAL DE AVISOS</h5></div>
    
     <div class="table-responsive p-2">
-        <table class="table table-success table-hover table-striped table-sm">
+        <table class="table table-light table-hover table-striped table-sm">
             <thead class="table-dark">
                 <tr>
                     <th scope="col">Dirección</th>
                     <th scope="col">Motivo</th>
-                    <th scope="col">Fecha de apertura</th>
-                    <th scope="col">Fecha de cierre</th>
+                    <th scope="col">Apertura</th>
+                    <th scope="col">Cierre</th>
+                    
                 </tr>
             </thead>
             <tbody>
@@ -26,8 +27,9 @@ SUMARTE - ADMINISTRACION
                             <a href="{% url 'aviso_detalle' aviso.id %}">{{ aviso.direccion }}</a>
                         </th>
                         <td>{{ aviso.motivo }}</td>
-                        <td>{{ aviso.created|date:"d/m/Y - H:i" }}</td>
-                        <td>{{ aviso.updated|date:"d/m/Y - H:i" }}</td>
+                        <td>{{ aviso.created|date:"d/m/Y"}}</td>
+                        <td>{{ aviso.updated|date:"d/m/Y"}}</td>
+                        
                     </tr>
                 {% endfor %}
             </tbody>

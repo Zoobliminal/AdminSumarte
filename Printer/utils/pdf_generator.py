@@ -1,5 +1,5 @@
 from django.shortcuts import render, HttpResponse, get_object_or_404, redirect
-from AdminSumarteApp.models import AgendaHoja
+#from AdminSumarteApp.models import AgendaHoja
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages

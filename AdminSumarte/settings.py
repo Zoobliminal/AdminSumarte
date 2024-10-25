@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     'Avisos',
     'Contadores',
     'Personal_Red',
+    'Instalaciones',
     'Printer',
     'crispy_forms',
     'crispy_bootstrap5',

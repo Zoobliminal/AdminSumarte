@@ -1,7 +1,7 @@
 from django.shortcuts import render, HttpResponse
 from django.template import Template, Context
 from django.shortcuts import render
-from AdminSumarteApp.models import AgendaHoja
+# from AdminSumarteApp.models import AgendaHoja
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 import datetime
@@ -19,8 +19,8 @@ def gestion_corte(request):
     return render (request, "AdminSumarteApp/gestion_corte.html", {"comentarios":listaComentarios})
 
 
-def fichaje(request):
-    return render (request, "AdminSumarteApp/fichaje.html")
+# def fichaje(request):
+#     return render (request, "AdminSumarteApp/fichaje.html")
 
 
 

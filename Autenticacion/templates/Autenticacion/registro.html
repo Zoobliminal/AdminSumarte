@@ -1,31 +1,64 @@
-
 {% extends "AdminSumarteApp/base.html" %}
   
 {% load static %}
 
+{% load crispy_forms_tags %}
 
-  {% block content %}
 
-    <body>
-    <div class="card">
-      <div class="card-header">
-        Información
-      </div>
-      <div class="card-body text-center">
-        <div class="card-body p-5 text-center">
+{% block content %}
+
+<body>
+
+    <form method="post" action="">
+
+      {% csrf_token %}
+
+      <div style="width: 100%; margin: auto;">
+
+
+
+        {% comment %} {% if messages %}
+          
+          {% for mensaje in messages %}
+
+            <br>
+            <div class="alert alert-{{mensaje.tags}}">
+                              
+                {{mensaje}}
+            
+            </div>
+
+          {% endfor %}
+
+        {% endif %} {% endcomment %}
+
+        <section class="vh-50 p-6" style="background-color: #19437E;">
+          <div class="container py-5 h-100">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+              <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+                <div class="card shadow-2-strong" style="border-radius: 1rem;">
+                  
+                  <div class="card-body p-5 text-center">
+                      <h3 class="mb-5"> <img class="intro-img img-fluid mb-3 mb-lg-0 rounded" src="{% static 'AdminSumarteApp/img/arteixosumarte_logo_azul.png' %}" alt=""></img></h3>
+                    
+                      <h5 class="card-title">Registro en la plataforma </h5>
+                      <p class="card-text">Contacta con el soporte para registrarte en la aplicación:</p>
+                      <p class="card-text"> <a href="mailto:informatica@sumarte.gal">informatica@sumarte.gal</a> </p>
+                      <br>
+                      
+                      <a href="{% url 'login' %}" class="link fw-semibold">Iniciar Sesion</a>
+
+                  </div>
         
-          <h2 class="mb-4"> <img class=" img-fluid mb-3 mb-lg-0 rounded" src="{% static 'AdminSumarteApp/img/arteixosumarte_logo_azul.png' %}" alt=""></img></h2>
-
-        </div>
-
-        <h5 class="card-title">Registro en la plataforma </h5>
-        <p class="card-text">Contacta con el soporte para registrarte en la aplicación:</p>
-        <p class="card-text"> <a href="mailto:informatica@sumarte.gal">informatica@sumarte.gal</a> </p>
-        <hr>
-        <a href="{% url 'login' %}" class="link fw-semibold">Iniciar Sesion</a>
-      
+                  </div>
+                </div>
+              </div>
+            </div>       
+        </section>
       </div>
-    </div>
+    </form>
+     
   
-  {% endblock %}
-</body>
+</body>  
+
+{% endblock %}

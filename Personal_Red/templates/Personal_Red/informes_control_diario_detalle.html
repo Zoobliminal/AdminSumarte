@@ -8,7 +8,7 @@
 <div class="container mt-4">
     <h2><p class="text-white">Control Diario </p></h2>
     <h6><p class="text-white">REGISTRO – CONTROL DIARIO EN DEPÓSITO Y RED (ROTANDO PUNTOS) - {{ control.nombre_mes }} {{ control.año }}</p></h6>
-
+    <p class="text-white">Hoy es {{ fecha|date:"d/m/Y" }}</p>
    <!-- Formulario para añadir nueva línea -->
    <form style="width: 100%;" id="nueva-linea-form" method="POST" action="{% url 'add_linea_control_diario' control.id %}">
     {% csrf_token %}
@@ -48,7 +48,7 @@
                 <th>pH<br> <small><small>(6,5 – 9,5)</small></small></th>
                 <th>Turb.<br><small><small>(≤ 4 UNF)</small></small></th>
                 <th>Responsable</th>
-                <th>Acciones</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -62,11 +62,32 @@
                 <td style="color: {% if linea.turbidez > 4.0 %}red{% endif %};">{{ linea.turbidez }}</td>
                 <td>{{ linea.responsable }}</td>
                 <td>
-                    <form method="POST" action="{% url 'eliminar_linea_control_diario' control.id %}">
-                        {% csrf_token %}
-                        <input type="hidden" name="dia" value="{{ linea.dia }}">
-                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de que deseas eliminar el día {{ linea.dia }}?')">Eliminar</button>
-                    </form>
+                    <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#confirmModal{{ linea.dia }}">
+                        Eliminar
+                    </button>
+                    
+                    <!-- Modal de confirmación para cada línea -->
+                    <div class="modal fade" id="confirmModal{{ linea.dia }}" tabindex="-1" aria-labelledby="confirmModalLabel{{ linea.dia }}" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="confirmModalLabel{{ linea.dia }}">Confirmación de Eliminación</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    Esta acción no se podrá deshacer. ¿Deseas eliminar el registro del día {{ linea.dia }}?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                    <form method="POST" action="{% url 'eliminar_linea_control_diario' control.id %}">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="dia" value="{{ linea.dia }}">
+                                        <button type="submit" class="btn btn-danger">Eliminar</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </td>
             </tr>
             {% endfor %}

@@ -229,28 +229,20 @@ def informes_control_diario(request):
     paginator = Paginator(controles, 12)  # 12 controles por página
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
+    hoy = datetime.now()
  
-    return render (request, "Personal_Red/informes_control_diario.html",{'controles': page_obj})
-
-@login_required(login_url="/accounts/login/login")
-def informes_control_diario(request):
-    controles = ControlDiario.objects.all().order_by('-año', '-mes')
-    paginator = Paginator(controles, 12)  # 12 controles por página
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
- 
-    return render (request, "Personal_Red/informes_control_diario.html",{'controles': page_obj})
+    return render (request, "Personal_Red/informes_control_diario.html",{'controles': page_obj,'fecha':hoy})
 
 
 @login_required(login_url="/accounts/login/login")
 def obtener_lineas_informe(request, control_id):
     # Asegúrate de que control_id sea un entero
     control = get_object_or_404(ControlDiario, id=control_id)
-    
+    hoy = datetime.now()
     # Filtra las líneas asociadas al control_diario especificado
     lineas = ControlDiarioLinea.objects.filter(control_diario=control).order_by('dia')
 
-    return render(request, 'Personal_Red/informes_control_diario_detalle.html', {'lineas': lineas, 'control': control})
+    return render(request, 'Personal_Red/informes_control_diario_detalle.html', {'lineas': lineas,'fecha':hoy, 'control': control})
 
 
 @login_required(login_url="/accounts/login/login")

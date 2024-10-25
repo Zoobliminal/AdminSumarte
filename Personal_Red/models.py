@@ -33,6 +33,7 @@ class ControlDiario(models.Model):
             "JULIO", "AGOSTO", "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE"
         ]
         return meses[self.mes - 1]  # Restamos 1 porque la lista es cero-indexada
+
     
     
 
@@ -57,3 +58,34 @@ class ControlDiarioLinea(models.Model):
 
     def __str__(self):
         return f"Registro Día {self.dia} - Punto {self.punto}"
+
+
+class CambioZona(models.Model):
+    poblacion_abastecida = models.CharField(max_length=100)
+    origen_agua = models.CharField(max_length=100)
+    fecha_hora_inicio = models.DateTimeField()
+    fecha_hora_fin = models.DateTimeField(blank=True, null=True)
+    motivo_cambio = models.TextField()
+
+    def __str__(self):
+        return f"Cambio en {self.poblacion_abastecida} - Inicio: {self.fecha_hora_inicio}"
+
+class TratamientoAgua(models.Model):
+    fecha_mantenimiento = models.DateField()
+    tipo_mantenimiento = models.CharField(max_length=100)  # Ej. "Cloración", "Revisión"
+    sustancia_empleada = models.CharField(max_length=100)
+    proveedor = models.CharField(max_length=100)  # O puedes usar un ForeignKey si tienes un modelo de Proveedor
+    documentacion_disponible = models.TextField(blank=True, null=True)
+    responsable = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+
+    def __str__(self):
+        return f"Mantenimiento {self.tipo_mantenimiento} - {self.sustancia_empleada} ({self.fecha_mantenimiento})"
+
+class ManipuladorAlimentos(models.Model):
+    manipulador = models.ForeignKey(User, on_delete=models.CASCADE)  # Relaciona al trabajador
+    actividad_en_empresa = models.CharField(max_length=200)
+    formacion = models.CharField(max_length=100)  # Ej. "Manipulador de alimentos"
+    fecha_certificado = models.DateField()
+
+    def __str__(self):
+        return f"{self.manipulador} - {self.tarea_realizada} - {self.fecha_certificado}"
