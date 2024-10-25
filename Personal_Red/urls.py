@@ -17,6 +17,7 @@ urlpatterns = [
      path('instalaciones/', views.Personal_Red_menu_instalaciones, name='instalaciones'),
     path('informes/', views.Personal_Red_menu_informes, name='informes'),
     path('informes_control_diario/', views.informes_control_diario, name='informes_control_diario'),
+    # path('informes_control_semanal/', views.informes_control_diario, name='informes_control_diario'),
     path('crear_control_diario/', views.crear_control_diario, name='crear_control_diario'),
     path('obtener_lineas_informe/<int:control_id>/', views.obtener_lineas_informe, name='obtener_lineas_informe'),
     path('add_linea_control_diario/<int:control_id>/', views.add_linea_control_diario, name='add_linea_control_diario'),

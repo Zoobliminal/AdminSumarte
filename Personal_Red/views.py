@@ -232,6 +232,15 @@ def informes_control_diario(request):
  
     return render (request, "Personal_Red/informes_control_diario.html",{'controles': page_obj})
 
+@login_required(login_url="/accounts/login/login")
+def informes_control_diario(request):
+    controles = ControlDiario.objects.all().order_by('-año', '-mes')
+    paginator = Paginator(controles, 12)  # 12 controles por página
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+ 
+    return render (request, "Personal_Red/informes_control_diario.html",{'controles': page_obj})
+
 
 @login_required(login_url="/accounts/login/login")
 def obtener_lineas_informe(request, control_id):
