@@ -6,14 +6,15 @@ class Instalacion(models.Model):
     TIPO_INSTALACION = [
         ('DEP', 'Depósito'),
         ('BOM', 'Bombeo'),
-        ('ETAP', 'Estación de Tratamiento de Agua Potable'),
-        ('EDAR', 'Estación de Depuración de Aguas Residuales'),
+        ('ETAP', 'E.T.A.P.'),
+        ('EDAR', 'E.D.A.R.'),
     ]
 
     nombre = models.CharField(max_length=100)
     tipo = models.CharField(max_length=4, choices=TIPO_INSTALACION)
     ubicacion = models.CharField(max_length=200, blank=True, null=True)
     fecha_creacion = models.DateField(auto_now_add=True)
+    datalog_code = models.IntegerField(blank=True, null=True)
 
     def __str__(self):
         return f"{self.nombre} - {self.get_tipo_display()}"

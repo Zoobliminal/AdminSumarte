@@ -9,6 +9,7 @@ from . import views
 urlpatterns = [
     path('', views.instalaciones, name='instalaciones'),
     path('mapa/', views.mapa_instalaciones, name='mapa_instalaciones'),
+    path('instalacion/<int:instalacion_id>/', views.detalle_instalacion, name='detalle_instalacion'),
 
 
 ]

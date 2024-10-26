@@ -25,8 +25,70 @@
             <h3 class="mb-5"> <img class="intro-img img-fluid mb-3 mb-lg-0 rounded" src="{% static 'AdminSumarteApp/img/arteixosumarte_logo_azul.png' %}" alt=""></img></h3>
             <div class="card-body text-center">
                 
-               
-                               
+              
+                
+                
+              <div class="instalacion text-start">
+                <h2>{{ instalacion.nombre }}</h2>
+                <p><strong>Tipo:</strong> {{ instalacion.get_tipo_display }}<strong> Ubicación:</strong> {{ instalacion.ubicacion }}</p>   
+                <hr>
+            </div>
+
+            {% if inspecciones_mensuales or inspecciones_anuales%}
+            <h6 class="text-center mb-6">Inspección Depósito</h6>
+            <table class="table table-bordered table-hover table-sm col-8">
+              <thead>
+                <tr>
+                  <th scope="col">Tipo</th>
+                  <th scope="col">Última</th>
+                  
+                  <th scope="col">Responsable</th>
+                  <th scope="col">Ver</th>
+                  <th scope="col">Todas</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% if inspecciones_mensuales %}
+                    {% for inspeccion in inspecciones_mensuales %}
+                        <tr>
+                            <td>M</td>
+                            <td>{{ inspeccion.fecha_realizada|date:"d/m/Y" }}</td>
+                           
+                            <td>{{ inspeccion.trabajador }}</td>
+                            <td>OO</td>
+                            <td>all</td>
+                        </tr>
+                    {% endfor %}
+                {% endif %}
+                {% if inspecciones_anuales %}
+                    {% for inspeccion in inspecciones_anuales %}
+                        <tr>
+                            <td>A</td>
+                            <td>{{ inspeccion.fecha_realizada|date:"d/m/Y" }}</td>
+                          
+                            <td>{{ inspeccion.trabajador }}</td>
+                            <td>OO</td>
+                            <td>all</td>
+                        </tr>
+                    {% endfor %}
+                
+                {% endif %}
+              </tbody>
+            </table>
+             {% endif %}
+             <a href="{% url 'red' %}"  class="btn btn-outline-dark btn-sm"> Inspeccion Mensual</a>  
+             <a href="{% url 'red' %}"  class="btn btn-outline-dark btn-sm"> Inspeccion Anual</a><br>
+             <hr>
+
+
+             <h6 class="text-center mb-6">Registro de Limpieza</h6>
+
+             <a href="{% url 'red' %}"  class="btn btn-outline-dark btn-sm"> Inspeccion Mensual</a>  
+             <a href="{% url 'red' %}"  class="btn btn-outline-dark btn-sm"> Inspeccion Anual</a><br><hr>
+             <a href="{% url 'instalaciones' %}" class="btn btn-outline-dark btn-sm">Volver</a>
+                
+            
+              
             
             </div>
            
