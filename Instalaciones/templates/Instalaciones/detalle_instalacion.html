@@ -29,13 +29,16 @@
                 
                 
               <div class="instalacion text-start">
-                <h2>{{ instalacion.nombre }}</h2>
-                <p><strong>Tipo:</strong> {{ instalacion.get_tipo_display }}<strong> Ubicación:</strong> {{ instalacion.ubicacion }}</p>   
-                <hr>
-            </div>
+                <h2>
+                  <strong style="font-size: 0.8em;">{{ instalacion.nombre }}</strong>
+                  <span style="font-size: 0.6em;">{{ instalacion.get_tipo_display }} - {{ instalacion.ubicacion }}</span>
+                  <hr>
+              </h2>
+              </div>
 
-            {% if inspecciones_mensuales or inspecciones_anuales%}
+            
             <h6 class="text-center mb-6">Inspección Depósito</h6>
+            {% if inspecciones_mensuales or inspecciones_anuales%}
             <table class="table table-bordered table-hover table-sm col-8">
               <thead>
                 <tr>
@@ -83,8 +86,8 @@
 
              <h6 class="text-center mb-6">Registro de Limpieza</h6>
 
-             <a href="{% url 'red' %}"  class="btn btn-outline-dark btn-sm"> Inspeccion Mensual</a>  
-             <a href="{% url 'red' %}"  class="btn btn-outline-dark btn-sm"> Inspeccion Anual</a><br><hr>
+           
+             <a href="{% url 'red' %}"  class="btn btn-outline-dark btn-sm"> Registrar Limpieza</a><br><hr>
              <a href="{% url 'instalaciones' %}" class="btn btn-outline-dark btn-sm">Volver</a>
                 
             
