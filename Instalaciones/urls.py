@@ -10,6 +10,11 @@ urlpatterns = [
     path('', views.instalaciones, name='instalaciones'),
     path('mapa/', views.mapa_instalaciones, name='mapa_instalaciones'),
     path('instalacion/<int:instalacion_id>/', views.detalle_instalacion, name='detalle_instalacion'),
+    path('inspeccion/detalle/<int:id>/', views.inspeccion_detalle, name='inspeccion_detalle'),
+    path('inspecciones/todas/<int:instalacion_id>/<str:tipo>/', views.todas_inspecciones, name='todas_inspecciones'),
+    path('inspeccion-mensual/update/<int:pk>/', views.update_inspeccion_mensual, name='update_inspeccion_mensual'),
+    path('inspeccion-anual/update/<int:pk>/', views.update_inspeccion_anual, name='update_inspeccion_anual'),
+    
 
 
 ]

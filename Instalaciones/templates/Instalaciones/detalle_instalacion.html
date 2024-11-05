@@ -3,15 +3,21 @@
 {% load static %}
 <html lang="en">
 
-
 {% block title %}
-
 {% endblock %}
 
-
-
 {% block content%} 
-    
+<style>
+  .tipo-instalacion {
+    text-decoration: none !important;
+    color: #000000; 
+  }
+  .tipo-instalacion:hover {
+    color: #000000;
+    text-decoration: underline;
+    font-weight: bold;
+  }
+</style>    
 <body>
 
 <section class="vh-50 p-6" style="background-color: #19437E;">
@@ -21,88 +27,194 @@
         <div class="card shadow-2-strong" style="border-radius: 1rem;">
           
           <div class="card-body p-5 text-center">
-
-            <h3 class="mb-5"> <img class="intro-img img-fluid mb-3 mb-lg-0 rounded" src="{% static 'AdminSumarteApp/img/arteixosumarte_logo_azul.png' %}" alt=""></img></h3>
-            <div class="card-body text-center">
-                
-              
-                
-                
-              <div class="instalacion text-start">
-                <h2>
-                  <strong style="font-size: 0.8em;">{{ instalacion.nombre }}</strong>
-                  <span style="font-size: 0.6em;">{{ instalacion.get_tipo_display }} - {{ instalacion.ubicacion }}</span>
-                  <hr>
+            <div class="instalacion text-start">
+              <h2>
+                <strong style="font-size: 1.2em;">{{ instalacion.nombre }}</strong>
+                <span style="font-size: 0.8em;">{{ instalacion.get_tipo_display }} - {{ instalacion.ubicacion }}</span>
               </h2>
-              </div>
+              <hr>
+            </div>
 
-            
             <h6 class="text-center mb-6">Inspección Depósito</h6>
-            {% if inspecciones_mensuales or inspecciones_anuales%}
-            <table class="table table-bordered table-hover table-sm col-8">
+            {% if ultima_inspeccion_mensual or ultima_inspeccion_anual %}
+            <table class="table table-bordered table-hover table-sm col-8 mx-auto">
               <thead>
                 <tr>
                   <th scope="col">Tipo</th>
                   <th scope="col">Última</th>
-                  
                   <th scope="col">Responsable</th>
-                  <th scope="col">Ver</th>
-                  <th scope="col">Todas</th>
                 </tr>
               </thead>
               <tbody>
-                {% if inspecciones_mensuales %}
-                    {% for inspeccion in inspecciones_mensuales %}
-                        <tr>
-                            <td>M</td>
-                            <td>{{ inspeccion.fecha_realizada|date:"d/m/Y" }}</td>
-                           
-                            <td>{{ inspeccion.trabajador }}</td>
-                            <td>OO</td>
-                            <td>all</td>
-                        </tr>
-                    {% endfor %}
-                {% endif %}
-                {% if inspecciones_anuales %}
-                    {% for inspeccion in inspecciones_anuales %}
-                        <tr>
-                            <td>A</td>
-                            <td>{{ inspeccion.fecha_realizada|date:"d/m/Y" }}</td>
-                          
-                            <td>{{ inspeccion.trabajador }}</td>
-                            <td>OO</td>
-                            <td>all</td>
-                        </tr>
-                    {% endfor %}
-                
-                {% endif %}
+                {% if ultima_inspeccion_mensual %}
+                <tr
+                    {% if ultima_inspeccion_mensual.elementos_cierre and ultima_inspeccion_mensual.senalizacion and ultima_inspeccion_mensual.estado_valvulas and ultima_inspeccion_mensual.canalizaciones and ultima_inspeccion_mensual.instalaciones %}
+                        class="table-success"
+                    {% else %}
+                        class="table-danger"
+                    {% endif %}
+                >
+                    <td>M</td>
+                    <td>
+                      <a href="#" data-bs-toggle="modal" data-bs-target="#modalInspeccionMensual">
+                        {{ ultima_inspeccion_mensual.fecha_realizada|date:"d/m/Y" }}
+                      </a>
+                    </td>
+                    <td>{{ ultima_inspeccion_mensual.trabajador }}</td>
+                </tr>
+            {% endif %}
+
+            {% if ultima_inspeccion_anual %}
+                <tr
+                    {% if ultima_inspeccion_anual.revision_fisuras == "Correcto" and ultima_inspeccion_anual.revision_corrosion == "Correcto" and ultima_inspeccion_anual.revision_materiales_sellado == "Correcto" and ultima_inspeccion_anual.revision_paramentos_exteriores == "Correcto" and ultima_inspeccion_anual.existencia_sedimentos == "Correcto" %}
+                        class="table-success"
+                    {% else %}
+                        class="table-danger"
+                    {% endif %}
+                >
+                    <td>A</td>
+                    <td>
+                      <a href="#" data-bs-toggle="modal" data-bs-target="#modalInspeccionAnual">
+                        {{ ultima_inspeccion_anual.fecha_realizada|date:"d/m/Y" }}
+                      </a>
+                    </td>
+                    <td>{{ ultima_inspeccion_anual.trabajador }}</td>
+                </tr>
+            {% endif %}
               </tbody>
             </table>
-             {% endif %}
-             <a href="{% url 'red' %}"  class="btn btn-outline-dark btn-sm"> Inspeccion Mensual</a>  
-             <a href="{% url 'red' %}"  class="btn btn-outline-dark btn-sm"> Inspeccion Anual</a><br>
-             <hr>
 
-
-             <h6 class="text-center mb-6">Registro de Limpieza</h6>
-
-           
-             <a href="{% url 'red' %}"  class="btn btn-outline-dark btn-sm"> Registrar Limpieza</a><br><hr>
-             <a href="{% url 'instalaciones' %}" class="btn btn-outline-dark btn-sm">Volver</a>
-                
-            
-              
-            
+            <div class="mb-4">
+              <a href="{% url 'red' %}" class="btn btn-outline-dark btn-sm"> Inspección Mensual</a>  
+              <a href="{% url 'red' %}" class="btn btn-outline-dark btn-sm"> Inspección Anual</a>
+              <a href="{% url 'red' %}" class="btn btn-outline-dark btn-sm"> Consultar Historial</a>
             </div>
-           
-      
-           </div>
+            {% endif %}
+
+            <hr>
+            <h6 class="text-center mb-6">Registro de Limpieza</h6>
+            <a href="{% url 'red' %}" class="btn btn-outline-dark btn-sm"> Registrar Limpieza</a><br>
+            <hr>
+            <a href="{% url 'instalaciones' %}" class="btn btn-outline-dark btn-sm">Volver</a>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-</body>  
+<!-- Modal Inspección Mensual -->
+<div class="modal fade" id="modalInspeccionMensual" tabindex="-1" aria-labelledby="modalInspeccionMensualLabel" aria-hidden="true">
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="modalInspeccionMensualLabel">Detalle Inspección Mensual</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <form method="post" action="{% url 'update_inspeccion_mensual' ultima_inspeccion_mensual.id %}">
+              {% csrf_token %}
+              <div class="modal-body">
+                  <div class="mb-3">
+                      <label>Fecha Realizada:</label>
+                      <input type="date" name="fecha_realizada" value="{{ ultima_inspeccion_mensual.fecha_realizada }}" class="form-control">
+                  </div>
+                  <div class="form-check">
+                      <input type="checkbox" name="elementos_cierre" class="form-check-input" {% if ultima_inspeccion_mensual.elementos_cierre %}checked{% endif %}>
+                      <label class="form-check-label">Elementos de Cierre</label>
+                  </div>
+                  <div class="form-check">
+                      <input type="checkbox" name="senalizacion" class="form-check-input" {% if ultima_inspeccion_mensual.senalizacion %}checked{% endif %}>
+                      <label class="form-check-label">Señalización</label>
+                  </div>
+                  <div class="form-check">
+                      <input type="checkbox" name="estado_valvulas" class="form-check-input" {% if ultima_inspeccion_mensual.estado_valvulas %}checked{% endif %}>
+                      <label class="form-check-label">Estado de Válvulas</label>
+                  </div>
+                  <div class="form-check">
+                      <input type="checkbox" name="canalizaciones" class="form-check-input" {% if ultima_inspeccion_mensual.canalizaciones %}checked{% endif %}>
+                      <label class="form-check-label">Canalizaciones</label>
+                  </div>
+                  <div class="form-check">
+                      <input type="checkbox" name="instalaciones" class="form-check-input" {% if ultima_inspeccion_mensual.instalaciones %}checked{% endif %}>
+                      <label class="form-check-label">Instalaciones</label>
+                  </div>
+                  <div class="mb-3">
+                      <label>Observaciones:</label>
+                      <textarea name="observaciones" class="form-control">{{ ultima_inspeccion_mensual.observaciones }}</textarea>
+                  </div>
+              </div>
+              <div class="modal-footer">
+                  <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+              </div>
+          </form>
+      </div>
+  </div>
+</div>
 
+<!-- Modal Inspección Anual -->
+<div class="modal fade" id="modalInspeccionAnual" tabindex="-1" aria-labelledby="modalInspeccionAnualLabel" aria-hidden="true">
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="modalInspeccionAnualLabel">Detalle Inspección Anual</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <form method="post" action="{% url 'update_inspeccion_anual' ultima_inspeccion_anual.id %}">
+              {% csrf_token %}
+              <div class="modal-body">
+                  <div class="mb-3">
+                      <label>Fecha Realizada:</label>
+                      <input type="date" name="fecha_realizada" value="{{ ultima_inspeccion_anual.fecha_realizada }}" class="form-control">
+                  </div>
+                  <div class="mb-3">
+                      <label>Revisión de Fisuras:</label>
+                      <select name="revision_fisuras" class="form-select">
+                          <option value="Correcto" {% if ultima_inspeccion_anual.revision_fisuras == "Correcto" %}selected{% endif %}>Correcto</option>
+                          <option value="No Correcto" {% if ultima_inspeccion_anual.revision_fisuras == "No Correcto" %}selected{% endif %}>No Correcto</option>
+                      </select>
+                  </div>
+                  <div class="mb-3">
+                      <label>Revisión de Corrosión:</label>
+                      <select name="revision_corrosion" class="form-select">
+                          <option value="Correcto" {% if ultima_inspeccion_anual.revision_corrosion == "Correcto" %}selected{% endif %}>Correcto</option>
+                          <option value="No Correcto" {% if ultima_inspeccion_anual.revision_corrosion == "No Correcto" %}selected{% endif %}>No Correcto</option>
+                      </select>
+                  </div>
+                  <div class="mb-3">
+                      <label>Revisión de Materiales de Sellado:</label>
+                      <select name="revision_materiales_sellado" class="form-select">
+                          <option value="Correcto" {% if ultima_inspeccion_anual.revision_materiales_sellado == "Correcto" %}selected{% endif %}>Correcto</option>
+                          <option value="No Correcto" {% if ultima_inspeccion_anual.revision_materiales_sellado == "No Correcto" %}selected{% endif %}>No Correcto</option>
+                      </select>
+                  </div>
+                  <div class="mb-3">
+                      <label>Revisión de Paramentos Exteriores:</label>
+                      <select name="revision_paramentos_exteriores" class="form-select">
+                          <option value="Correcto" {% if ultima_inspeccion_anual.revision_paramentos_exteriores == "Correcto" %}selected{% endif %}>Correcto</option>
+                          <option value="No Correcto" {% if ultima_inspeccion_anual.revision_paramentos_exteriores == "No Correcto" %}selected{% endif %}>No Correcto</option>
+                      </select>
+                  </div>
+                  <div class="mb-3">
+                      <label>Existencia de Sedimentos:</label>
+                      <select name="existencia_sedimentos" class="form-select">
+                          <option value="Correcto" {% if ultima_inspeccion_anual.existencia_sedimentos == "Correcto" %}selected{% endif %}>Correcto</option>
+                          <option value="No Correcto" {% if ultima_inspeccion_anual.existencia_sedimentos == "No Correcto" %}selected{% endif %}>No Correcto</option>
+                      </select>
+                  </div>
+                  <div class="mb-3">
+                      <label>Observaciones:</label>
+                      <textarea name="observaciones" class="form-control">{{ ultima_inspeccion_anual.observaciones }}</textarea>
+                  </div>
+              </div>
+              <div class="modal-footer">
+                  <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+              </div>
+          </form>
+      </div>
+  </div>
+</div>
+
+</body>  
 {% endblock %}
