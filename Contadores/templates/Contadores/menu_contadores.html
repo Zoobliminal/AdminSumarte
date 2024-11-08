@@ -94,7 +94,32 @@
       </div>
     </div>
   </section>
-
+  
+  <script>
+    document.getElementById("registroFugasButtonText").addEventListener("click", function(event) {
+        event.preventDefault(); // Evita la recarga de página
+    
+        fetch("http://arteixo/ReportServer?%2FCompass%2FProduccion%2FInspeccionHojas&zonaD=01&zonaH=05&period=01", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+                alert("La solicitud de registro de fugas se ha realizado con éxito.");
+                // Puedes realizar otras acciones aquí si lo necesitas
+            } else {
+                alert("Hubo un problema con la solicitud de registro de fugas.");
+            }
+        })
+        .catch(error => {
+            console.error("Error en la solicitud:", error);
+            alert("No se pudo completar la solicitud de registro de fugas.");
+        });
+    });
+    </script>
+    
 </body>  
 
 {% endblock %}

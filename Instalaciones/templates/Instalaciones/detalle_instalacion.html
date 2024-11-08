@@ -111,6 +111,8 @@
               <h5 class="modal-title" id="modalInspeccionMensualLabel">Detalle Inspección Mensual</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
+
+          {% if ultima_inspeccion_mensual.id %}
           <form method="post" action="{% url 'update_inspeccion_mensual' ultima_inspeccion_mensual.id %}">
               {% csrf_token %}
               <div class="modal-body">
@@ -148,6 +150,7 @@
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
               </div>
           </form>
+          {% endif %}
       </div>
   </div>
 </div>
@@ -160,6 +163,7 @@
               <h5 class="modal-title" id="modalInspeccionAnualLabel">Detalle Inspección Anual</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
+          {% if ultima_inspeccion_anual.id %}
           <form method="post" action="{% url 'update_inspeccion_anual' ultima_inspeccion_anual.id %}">
               {% csrf_token %}
               <div class="modal-body">
@@ -212,6 +216,7 @@
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
               </div>
           </form>
+          {% endif %}
       </div>
   </div>
 </div>

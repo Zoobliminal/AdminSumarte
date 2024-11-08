@@ -53,7 +53,9 @@ def todas_inspecciones(request, instalacion_id, tipo):
 def update_inspeccion_mensual(request, pk):
     inspeccion = get_object_or_404(InspeccionMensualDeposito, pk=pk)
     if request.method == 'POST':
-        inspeccion.fecha_realizada = request.POST.get('fecha_realizada')
+        fecha_realizada = request.POST.get('fecha_realizada')
+        if fecha_realizada:
+            inspeccion.fecha_realizada = fecha_realizada
         inspeccion.elementos_cierre = 'elementos_cierre' in request.POST
         inspeccion.senalizacion = 'senalizacion' in request.POST
         inspeccion.estado_valvulas = 'estado_valvulas' in request.POST
@@ -62,12 +64,15 @@ def update_inspeccion_mensual(request, pk):
         inspeccion.observaciones = request.POST.get('observaciones')
         inspeccion.save()
         messages.success(request, "Inspección mensual actualizada correctamente.")
-        return redirect('detalle_instalacion', id=inspeccion.instalacion.pk)
+        return redirect('detalle_instalacion', instalacion_id=inspeccion.instalacion.pk)
     
 def update_inspeccion_anual(request, pk):
     inspeccion = get_object_or_404(InspeccionAnualDeposito, pk=pk)
     if request.method == 'POST':
-        inspeccion.fecha_realizada = request.POST.get('fecha_realizada')
+        fecha_realizada = request.POST.get('fecha_realizada')
+        if fecha_realizada:
+            inspeccion.fecha_realizada = fecha_realizada
+        
         inspeccion.revision_fisuras = request.POST.get('revision_fisuras')
         inspeccion.revision_corrosion = request.POST.get('revision_corrosion')
         inspeccion.revision_materiales_sellado = request.POST.get('revision_materiales_sellado')
@@ -76,4 +81,4 @@ def update_inspeccion_anual(request, pk):
         inspeccion.observaciones = request.POST.get('observaciones')
         inspeccion.save()
         messages.success(request, "Inspección anual actualizada correctamente.")
-        return redirect('detalle_instalacion', id=inspeccion.instalacion.pk)
+        return redirect('detalle_instalacion', instalacion_id=inspeccion.instalacion.pk)
