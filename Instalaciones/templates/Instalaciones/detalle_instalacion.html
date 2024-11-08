@@ -85,7 +85,9 @@
             </table>
 
             <div class="mb-4">
-              <a href="{% url 'red' %}" class="btn btn-outline-dark btn-sm"> Inspección Mensual</a>  
+              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalNuevaInspeccionMensual">
+                 Inspección Mensual
+              </button> 
               <a href="{% url 'red' %}" class="btn btn-outline-dark btn-sm"> Inspección Anual</a>
               <a href="{% url 'red' %}" class="btn btn-outline-dark btn-sm"> Consultar Historial</a>
             </div>
@@ -103,7 +105,33 @@
   </div>
 </section>
 
-<!-- Modal Inspección Mensual -->
+
+<!-- Modal mes y año para nueva inspeccion mensual -->
+<div class="modal fade" id="modalNuevaInspeccionMensual" tabindex="-1" aria-labelledby="modalInspeccionMensualLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalInspeccionMensualLabel">Seleccionar Fecha de Inspección Mensual</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form method="post" action="{% url 'nueva_inspeccion_mensual' instalacion_id=instalacion.id %}">
+        {% csrf_token %}
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="fecha_realizada">Fecha de la Inspección:</label>
+            <input type="month" name="fecha_realizada" class="form-control" required>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <button type="submit" class="btn btn-primary">Crear Inspección</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Update Inspección Mensual -->
 <div class="modal fade" id="modalInspeccionMensual" tabindex="-1" aria-labelledby="modalInspeccionMensualLabel" aria-hidden="true">
   <div class="modal-dialog">
       <div class="modal-content">
@@ -155,7 +183,7 @@
   </div>
 </div>
 
-<!-- Modal Inspección Anual -->
+<!-- Modal Update Inspección Anual -->
 <div class="modal fade" id="modalInspeccionAnual" tabindex="-1" aria-labelledby="modalInspeccionAnualLabel" aria-hidden="true">
   <div class="modal-dialog">
       <div class="modal-content">

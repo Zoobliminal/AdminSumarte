@@ -3,6 +3,7 @@ from .models import Instalacion
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 from django.contrib import messages
+from datetime import datetime
 from .models import Instalacion, InspeccionMensualDeposito, InspeccionAnualDeposito  # Importa los modelos
 
 
@@ -48,6 +49,30 @@ def inspeccion_detalle(request, id):
 def todas_inspecciones(request, instalacion_id, tipo):
     inspecciones = Inspeccion.objects.filter(instalacion_id=instalacion_id, tipo=tipo)
     return render(request, 'AdminSumarteApp/todas_inspecciones.html', {'inspecciones': inspecciones})
+
+
+def nueva_inspeccion_mensual(request, instalacion_id):
+    instalacion = get_object_or_404(Instalacion, pk=instalacion_id)
+    
+    if request.method == 'POST':
+        # Verifica si ya existe una inspección mensual para el mes y año seleccionado
+        fecha = request.POST.get('fecha_realizada')
+        fecha_obj = datetime.strptime(fecha, "%Y-%m")
+        if InspeccionMensualDeposito.objects.filter(instalacion=instalacion, fecha_realizada__year=fecha_obj.year, fecha_realizada__month=fecha_obj.month).exists():
+            messages.error(request, "Ya existe una inspección mensual para este mes.")
+            return redirect('detalle_instalacion', instalacion_id=instalacion.id)
+        
+        # Si no existe, crea la nueva inspección mensual
+        nueva_inspeccion = InspeccionMensualDeposito(
+            instalacion=instalacion,
+            fecha_realizada=fecha_obj,
+            # otros campos
+        )
+        nueva_inspeccion.save()
+        messages.success(request, "Inspección mensual creada correctamente.")
+        return redirect('detalle_instalacion', instalacion_id=instalacion.id)
+
+    return render(request, 'Instalaciones/nueva_inspeccion_mensual.html', {'instalacion': instalacion})
 
 
 def update_inspeccion_mensual(request, pk):
